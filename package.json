@@ -1,0 +1,22 @@
+{
+  "name": "angular2-quickstart",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npm run tgp",
+    "tgp": "tougo-requests"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "angular": "1.4.8",
+    "systemjs": "0.19.6",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.3",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.0",
+    "angular-material": "1.0.0",
+    "angular-material-data-table" : "0.8.11"
+  },
+  "devDependencies": {
+    "lite-server": "^1.3.1"
+  }
+}

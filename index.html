@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <title>Angular 2 QuickStart</title>
+    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" href="node_modules/angular-material-data-table/dist/md-data-table.css">
+    <!-- 1. Load libraries -->
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script src="node_modules/angular-material-data-table/dist/md-data-table.min.js"></script>
+
+
+    <script src="node_modules/angular-material/angular-material.min.js"></script>
+    <!-- 2. Load our 'modules' -->
+    <script src='app/app.component.js'></script>
+
+</head>
+
+<!-- 3. Display the application -->
+<body ng-app="PropertyManager" ng-cloak>
+<div ng-controller="AppHouseController" ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-raised md-warn">ΝΕΟ ΑΚΙΝΗΤΟ</md-button>
+            <md-button class="md-raised md-warn">ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
+            <md-button class="md-raised md-warn">ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
+            <md-button class="md-raised md-warn">ΝΕΑ ΠΛΗΡΩΜΗ</md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-data-table-toolbar>
+        <h2 class="md-title">Ακίνητα</h2>
+    </md-data-table-toolbar>
+
+    <md-data-table-container>
+        <table md-data-table md-row-select="selected" md-progress="deferred">
+            <thead md-order="query.order" md-trigger="onOrderChange">
+            <tr>
+                <th name="Οδός" order-by="streetname"></th>
+                <th numeric name="Αριθμός" order-by="streetnumber"></th>
+                <th numeric name="Εμβαδόν" unit="m2" order-by="area"></th>
+                <th name="Περιγραφή" order-by="description"></th>
+                <th name="Όροφος" order-by="floor"></th>
+                <th numeric name="Ποσοστό" unit="%" order-by="percentage"></th>
+                <th name="Ημερομηνία" order-by="constructionDate"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-auto-select ng-repeat="property in properties">
+                <td>{{property.streetname}}</td>
+                <td>{{property.streetnumber}}</td>
+                <td>{{property.area | number: 1}}</td>
+                <td>{{property.description}}</td>
+                <td>{{property.floor | number: 1}}</td>
+                <td>{{property.percentage}}</td>
+                <td show-unit>{{property.constructionDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-data-table-container>
+    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{properties.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
+</div>
+<div ng-controller="AppTennantController" ng-cloak>
+    <md-data-table-toolbar>
+        <h2 class="md-title">Ενοικιαστές</h2>
+    </md-data-table-toolbar>
+
+    <md-data-table-container>
+        <table md-data-table md-row-select="selected" md-progress="deferred">
+            <thead md-order="query.order" md-trigger="onOrderChange">
+            <tr>
+                <th name="Όνομα" order-by="firstName"></th>
+                <th numeric name="Επίθετο" order-by="lastName"></th>
+                <th numeric name="ΑΦΜ" order-by="afm"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-auto-select ng-repeat="tenant in tenants">
+                <td>{{tenant.firstName}}</td>
+                <td>{{tenant.lastName}}</td>
+                <td>{{tenant.afm}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-data-table-container>
+    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
+</div>
+</body>
+
+</html>

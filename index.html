@@ -15,6 +15,15 @@
     <!-- 2. Load our 'modules' -->
     <script src='app/app.component.js'></script>
 
+<style>
+    .md-datepicker-input-container {
+        width: 250px;
+    }
+    .md-datepicker-input {
+        min-width: 250px;
+        max-width: 400px
+    }
+</style>
 </head>
 
 <!-- 3. Display the application -->
@@ -44,7 +53,7 @@
                 <th name="Περιγραφή" order-by="description"></th>
                 <th name="Όροφος" order-by="floor"></th>
                 <th numeric name="Ποσοστό" unit="%" order-by="percentage"></th>
-                <th name="Ημερομηνία" order-by="constructionDate"></th>
+                <th name="Ημερομηνία Κατασκευής" order-by="constructionDate"></th>
             </tr>
             </thead>
             <tbody>

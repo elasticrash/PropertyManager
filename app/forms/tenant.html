@@ -1,0 +1,31 @@
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+        <md-input-container>
+            <label>Όνομα</label>
+            <input ng-model="tenant.first_name">
+        </md-input-container>
+        <md-input-container>
+            <label>Επίθετο</label>
+            <input ng-model="tenant.last_name">
+        </md-input-container>
+    </div>
+</md-content>
+<md-content layout-padding>
+    <div>
+        <form name="userForm">
+            <md-input-container class="md-block">
+                <label>ΑΦΜ</label>
+                <input ng-model="tenant.afm">
+                <md-dialog-actions layout="row">
+                    <span flex></span>
+                    <md-button class="md-raised md-primary" ng-click="answer('OK')">
+                        OK
+                    </md-button>
+                    <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">
+                        ΑΚΥΡΩΣΗ
+                    </md-button>
+                </md-dialog-actions>
+            </md-input-container>
+        </form>
+    </div>
+</md-content>

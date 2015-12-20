@@ -31,8 +31,8 @@
 <div ng-controller="AppHouseController" ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button class="md-raised md-warn" ng-click="showAdvanced($event)">ΝΕΟ ΑΚΙΝΗΤΟ</md-button>
-            <md-button class="md-raised md-warn">ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
+            <md-button class="md-raised md-warn" ng-click="showProperty($event)">ΝΕΟ ΑΚΙΝΗΤΟ</md-button>
+            <md-button class="md-raised md-warn" ng-click="showTenant($event)">ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
             <md-button class="md-raised md-warn">ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
             <md-button class="md-raised md-warn">ΝΕΑ ΠΛΗΡΩΜΗ</md-button>
         </div>
@@ -54,6 +54,7 @@
                 <th name="Όροφος" order-by="floor"></th>
                 <th numeric name="Ποσοστό" unit="%" order-by="percentage"></th>
                 <th name="Ημερομηνία Κατασκευής" order-by="constructionDate"></th>
+                <th name="Ενοικιαστής" order-by="last_name"></th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +65,8 @@
                 <td>{{property.description}}</td>
                 <td>{{property.floor | number: 1}}</td>
                 <td>{{property.percentage}}</td>
-                <td show-unit>{{property.constructionDate}}</td>
+                <td>{{property.percenconstructionDatetage}}</td>
+                <td show-unit>{{property.first_name}} {{property.last_name}}</td>
             </tr>
             </tbody>
         </table>
@@ -80,15 +82,15 @@
         <table md-data-table md-row-select="selected" md-progress="deferred">
             <thead md-order="query.order" md-trigger="onOrderChange">
             <tr>
+                <th name="Επίθετο" order-by="last_name"></th>
                 <th name="Όνομα" order-by="first_name"></th>
-                <th numeric name="Επίθετο" order-by="last_name"></th>
                 <th numeric name="ΑΦΜ" order-by="afm"></th>
             </tr>
             </thead>
             <tbody>
             <tr md-auto-select ng-repeat="tenant in tenants">
-                <td>{{tenant.first_name}}</td>
                 <td>{{tenant.last_name}}</td>
+                <td>{{tenant.first_name}}</td>
                 <td>{{tenant.afm}}</td>
             </tr>
             </tbody>

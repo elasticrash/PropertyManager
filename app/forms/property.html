@@ -1,71 +1,48 @@
-    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-        <div>
-            <md-input-container>
-                <label>Όδος</label>
-                <input ng-model="property.streetname">
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+        <md-input-container>
+            <label>Όδος</label>
+            <input ng-model="property.streetname">
+        </md-input-container>
+        <md-input-container>
+            <label>Αριθμός</label>
+            <input ng-model="property.number">
+        </md-input-container>
+    </div>
+</md-content>
+<md-content layout-padding>
+    <div>
+        <form name="userForm">
+            <md-datepicker ng-model="property.constructionDate" md-placeholder="Ημερομηνία Κατασκευής">
+            </md-datepicker>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Εμβαδόν</label>
+                <input ng-model="property.firstName">
             </md-input-container>
-            <md-input-container>
-                <label>Αριθμός</label>
-                <input ng-model="property.number">
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block">
+                    <label>Όροφος</label>
+                    <input ng-model="property.floor">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Ποσοστό</label>
+                    <input ng-model="property.percentage">
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label>Περιγραφή</label>
+                <textarea ng-model="property.description" columns="1" md-maxlength="150" rows="5"></textarea>
             </md-input-container>
-        </div>
-    </md-content>
-    <md-content layout-padding>
-        <div>
-            <form name="userForm">
-                <div layout-gt-xs="row">
-                    <md-datepicker ng-model="property.constructionDate" md-placeholder="Ημερομηνία Κατασκευής">
-                    </md-datepicker>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>First name</label>
-                        <input ng-model="user.firstName">
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Last Name</label>
-                        <input ng-model="theMax">
-                    </md-input-container>
-                </div>
-                <md-input-container class="md-block">
-                    <label>Address</label>
-                    <input ng-model="user.address">
-                </md-input-container>
-                <md-input-container md-no-float class="md-block">
-                    <input ng-model="user.address2" placeholder="Address 2">
-                </md-input-container>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>City</label>
-                        <input ng-model="user.city">
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>State</label>
-                        <md-select ng-model="user.state">
-                            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-                                {{state.abbrev}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Postal Code</label>
-                        <input name="postalCode" ng-model="user.postalCode" placeholder="12345"
-                               required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
-                        <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
-                            <div ng-message="required" class="my-message">You must supply a postal code.</div>
-                            <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
-                                code.
-                            </div>
-                            <div ng-message="md-maxlength" class="my-message">
-                                Don't use the long version silly...we don't need to be that specific...
-                            </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <md-input-container class="md-block">
-                    <label>Biography</label>
-                    <textarea ng-model="user.biography" columns="1" md-maxlength="150" rows="5"></textarea>
-                </md-input-container>
-            </form>
-        </div>
-    </md-content>
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button class="md-raised md-primary" ng-click="answer('OK')">
+                    OK
+                </md-button>
+                <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">
+                    ΑΚΥΡΩΣΗ
+                </md-button>
+            </md-dialog-actions>
+            </md-input-container>
+        </form>
+    </div>
+</md-content>

@@ -88,7 +88,7 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
             $scope.properties.total = initProperties.length;
         };
 
-        $scope.showAdvanced = function(ev) {
+        $scope.showProperty = function(ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
             $mdDialog.show({
                 controller: DialogController,
@@ -98,11 +98,17 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
                 clickOutsideToClose:true,
                 fullscreen: useFullScreen
             });
+        };
 
-            $scope.$watch(function() {
-                return $mdMedia('xs') || $mdMedia('sm');
-            }, function(wantsFullScreen) {
-                $scope.customFullscreen = (wantsFullScreen === true);
+        $scope.showTenant= function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'app/forms/tenant.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen
             });
         };
     })

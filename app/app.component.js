@@ -2,7 +2,7 @@
  * Created by tougo on 17/12/15.
  */
 angular.module('PropertyManager', ['md.data.table','ngMaterial'])
-.controller('AppHouseController', function($scope,$http, $q) {
+.controller('AppHouseController', function($scope,$http, $q, $mdDialog, $mdMedia) {
     $scope.title1 = 'TESTING';
         $scope.properties = [];
         $scope.selected = [];
@@ -18,7 +18,7 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
         function readProperties() {
             var request = $http({
                 method: "get",
-                url: "http://localhost:3000/api/property/list",
+                url: "/api/property/list",
                 params: {
                     action: "add"
                 },
@@ -87,6 +87,30 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
             $scope.properties = initProperties.slice((page-1)*limit,(page-1)*limit+limit);
             $scope.properties.total = initProperties.length;
         };
+
+        $scope.showAdvanced = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'app/forms/property.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen
+            });
+
+            $scope.$watch(function() {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function(wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+    })
+    .config(function($mdThemingProvider) {
+        // Configure a dark theme with primary foreground yellow
+        $mdThemingProvider.theme('docs-dark', 'default')
+            .primaryPalette('yellow')
+            .dark();
     })
     .controller('AppTennantController', function($scope,$http, $q) {
         $scope.tenants = [];
@@ -103,7 +127,7 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
         function readProperties() {
             var request = $http({
                 method: "get",
-                url: "http://localhost:8002/rest/getTenant",
+                url: "/api/tenant/list",
                 params: {
                     action: "add"
                 },
@@ -174,3 +198,14 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
         };
     });
 
+function DialogController($scope, $mdDialog) {
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+}

@@ -7,7 +7,7 @@
 6 info start angular2-quickstart@1.0.0
 7 verbose unsafe-perm in lifecycle true
 8 info angular2-quickstart@1.0.0 Failed to exec start script
-9 verbose stack Error: angular2-quickstart@1.0.0 start: `npm run tgp`
+9 verbose stack Error: angular2-quickstart@1.0.0 start: `node node_modules/tougo-requests/tougo-requests.js`
 9 verbose stack Exit status 1
 9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
 9 verbose stack     at emitTwo (events.js:87:13)
@@ -24,13 +24,13 @@
 14 error node v4.2.1
 15 error npm  v2.14.7
 16 error code ELIFECYCLE
-17 error angular2-quickstart@1.0.0 start: `npm run tgp`
+17 error angular2-quickstart@1.0.0 start: `node node_modules/tougo-requests/tougo-requests.js`
 17 error Exit status 1
-18 error Failed at the angular2-quickstart@1.0.0 start script 'npm run tgp'.
+18 error Failed at the angular2-quickstart@1.0.0 start script 'node node_modules/tougo-requests/tougo-requests.js'.
 18 error This is most likely a problem with the angular2-quickstart package,
 18 error not with npm itself.
 18 error Tell the author that this fails on your system:
-18 error     npm run tgp
+18 error     node node_modules/tougo-requests/tougo-requests.js
 18 error You can get their info via:
 18 error     npm owner ls angular2-quickstart
 18 error There is likely additional logging output above.

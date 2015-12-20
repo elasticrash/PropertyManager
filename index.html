@@ -22,7 +22,7 @@
 <div ng-controller="AppHouseController" ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button class="md-raised md-warn">ΝΕΟ ΑΚΙΝΗΤΟ</md-button>
+            <md-button class="md-raised md-warn" ng-click="showAdvanced($event)">ΝΕΟ ΑΚΙΝΗΤΟ</md-button>
             <md-button class="md-raised md-warn">ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
             <md-button class="md-raised md-warn">ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
             <md-button class="md-raised md-warn">ΝΕΑ ΠΛΗΡΩΜΗ</md-button>
@@ -71,15 +71,15 @@
         <table md-data-table md-row-select="selected" md-progress="deferred">
             <thead md-order="query.order" md-trigger="onOrderChange">
             <tr>
-                <th name="Όνομα" order-by="firstName"></th>
-                <th numeric name="Επίθετο" order-by="lastName"></th>
+                <th name="Όνομα" order-by="first_name"></th>
+                <th numeric name="Επίθετο" order-by="last_name"></th>
                 <th numeric name="ΑΦΜ" order-by="afm"></th>
             </tr>
             </thead>
             <tbody>
             <tr md-auto-select ng-repeat="tenant in tenants">
-                <td>{{tenant.firstName}}</td>
-                <td>{{tenant.lastName}}</td>
+                <td>{{tenant.first_name}}</td>
+                <td>{{tenant.last_name}}</td>
                 <td>{{tenant.afm}}</td>
             </tr>
             </tbody>

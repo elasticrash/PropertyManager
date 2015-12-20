@@ -2,8 +2,7 @@
   "name": "angular2-quickstart",
   "version": "1.0.0",
   "scripts": {
-    "start": "npm run tgp",
-    "tgp": "tougo-requests"
+    "start": "node node_modules/tougo-requests/tougo-requests.js"
   },
   "license": "ISC",
   "dependencies": {

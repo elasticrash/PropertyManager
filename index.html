@@ -28,15 +28,15 @@
 
 <!-- 3. Display the application -->
 <body ng-app="PropertyManager" ng-cloak>
-<div ng-controller="HouseController" ng-cloak>
+<div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button class="md-raised md-warn">ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
+            <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)">ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ</md-button>
         </div>
     </md-toolbar>
+</div>
 
-
-
+    <div ng-controller="HouseController" ng-cloak>
     <md-data-table-toolbar ng-hide="selected.length">
         <h2 class="md-title">Ακίνητα</h2>
         <div flex></div>

@@ -2,19 +2,22 @@
  * Created by tougo on 17/12/15.
  */
 angular.module('PropertyManager', ['md.data.table','ngMaterial'])
-.controller('AppHouseController', function($scope,$http, $q, $mdDialog, $mdMedia) {
+.controller('HouseController', function($scope,$http, $q, $mdDialog, $mdMedia) {
     $scope.title1 = 'TESTING';
         $scope.properties = [];
         $scope.selected = [];
 
         var initProperties = [];
+
+
         $scope.query = {
             filter: '',
             order: 'streetname',
             limit: 5,
             page: 1
         };
-        loadRemoteData();
+        loadProperties();
+
         function readProperties() {
             var request = $http({
                 method: "get",
@@ -43,16 +46,16 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
             return( $q.reject( response.data.message ) );
         }
 
-        function loadRemoteData() {
+        function loadProperties() {
             readProperties()
                 .then(
                 function (properties) {
-                    applyRemoteData(properties);
+                    applyProperties(properties);
                 }
             );
         }
 
-        function applyRemoteData( newproperties ) {
+        function applyProperties( newproperties ) {
             $scope.properties.total = newproperties.length;
             initProperties = newproperties;
             $scope.properties = newproperties.slice(0,$scope.query.limit);
@@ -99,18 +102,6 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
                 fullscreen: useFullScreen
             });
         };
-
-        $scope.showTenant= function(ev) {
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'app/forms/tenant.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose:true,
-                fullscreen: useFullScreen
-            });
-        };
     })
     .config(function($mdThemingProvider) {
         // Configure a dark theme with primary foreground yellow
@@ -118,7 +109,7 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
             .primaryPalette('yellow')
             .dark();
     })
-    .controller('AppTennantController', function($scope,$http, $q) {
+    .controller('TennantController', function($scope,$http, $q, $mdDialog, $mdMedia) {
         $scope.tenants = [];
         $scope.selected = [];
 
@@ -201,6 +192,77 @@ angular.module('PropertyManager', ['md.data.table','ngMaterial'])
         $scope.onPaginationChange = function (page, limit) {
             $scope.tenants = initTennants.slice((page-1)*limit,(page-1)*limit+limit);
             $scope.tenants.total = initTennants.length;
+        };
+
+        $scope.showTenant= function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'app/forms/tenant.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen
+            });
+        };
+    })
+    .controller('PaymentController', function($scope,$http, $q, $mdDialog, $mdMedia) {
+        $scope.months = [];
+        loadMonths();
+        function readMonths() {
+            var request = $http({
+                method: "get",
+                url: "/api/months/list",
+                params: {
+                    action: "add"
+                },
+                data: {
+                    name: name
+                }
+            });
+            return( request.then( handleSuccess, handleError ) );
+        }
+
+        function handleSuccess( response ) {
+            return response.data ;
+        }
+
+        function handleError( response ) {
+            if (
+                ! angular.isObject( response.data ) ||
+                ! response.data.message
+            ) {
+                return( $q.reject( "An unknown error occurred." ) );
+            }
+            return( $q.reject( response.data.message ) );
+        }
+
+        function loadMonths() {
+            readMonths()
+                .then(
+                function (months) {
+                    applyMonths(months);
+                }
+            );
+        }
+
+        function applyMonths(newproperties ) {
+            $scope.months = newproperties;
+        }
+
+        $scope.showPayment= function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'app/forms/payment.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                controller: 'PaymentController',
+                controllerAs: 'ctrl',
+                locals: { months: $scope.months },
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen
+            });
         };
     });
 

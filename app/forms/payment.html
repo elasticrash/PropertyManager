@@ -2,23 +2,26 @@
     <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
         <div>
             <md-input-container>
-                <label>Όνομα</label>
-                <input ng-model="tenant.first_name">
+                <label>Ποσό</label>
+                <input ng-model="payment.amount">
             </md-input-container>
             <md-input-container>
-                <label>Επίθετο</label>
-                <input ng-model="tenant.last_name">
+                <label>Ημερομηνία πληρωμής</label>
+                <input ng-model="payment.paydate">
             </md-input-container>
         </div>
     </md-content>
     <md-content layout-padding>
         <div>
-            <md-input-container class="md-block">
-                <label>ΑΦΜ</label>
-                <input ng-model="tenant.afm">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Μήνας</label>
+                <md-select ng-model="payment.month">
+                    <md-option ng-repeat="month in months" value="{{month.name}}">
+                        {{month.name}}
+                    </md-option>
+                </md-select>
             </md-input-container>
         </div>
-    </md-content>
 </form>
 <md-dialog-actions layout="row">
     <span flex></span>

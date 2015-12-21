@@ -1,18 +1,18 @@
-<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-    <div>
-        <md-input-container>
-            <label>Όδος</label>
-            <input ng-model="property.streetname">
-        </md-input-container>
-        <md-input-container>
-            <label>Αριθμός</label>
-            <input ng-model="property.number">
-        </md-input-container>
-    </div>
-</md-content>
-<md-content layout-padding>
-    <div>
-        <form name="userForm">
+<form name="userForm">
+    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+        <div>
+            <md-input-container>
+                <label>Όδος</label>
+                <input ng-model="property.streetname">
+            </md-input-container>
+            <md-input-container>
+                <label>Αριθμός</label>
+                <input ng-model="property.number">
+            </md-input-container>
+        </div>
+    </md-content>
+    <md-content layout-padding>
+        <div>
             <md-datepicker ng-model="property.constructionDate" md-placeholder="Ημερομηνία Κατασκευής">
             </md-datepicker>
             <md-input-container class="md-block" flex-gt-sm>
@@ -33,16 +33,15 @@
                 <label>Περιγραφή</label>
                 <textarea ng-model="property.description" columns="1" md-maxlength="150" rows="5"></textarea>
             </md-input-container>
-            <md-dialog-actions layout="row">
-                <span flex></span>
-                <md-button class="md-raised md-primary" ng-click="answer('OK')">
-                    OK
-                </md-button>
-                <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">
-                    ΑΚΥΡΩΣΗ
-                </md-button>
-            </md-dialog-actions>
-            </md-input-container>
-        </form>
-    </div>
+        </div>
+</form>
+<md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button class="md-raised md-primary" ng-click="answer('OK')">
+        OK
+    </md-button>
+    <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">
+        ΑΚΥΡΩΣΗ
+    </md-button>
+</md-dialog-actions>
 </md-content>

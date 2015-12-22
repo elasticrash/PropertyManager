@@ -100,10 +100,10 @@
     <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
         <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
         <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
-            <md-button class="md-raised" ng-click="answer('OK')">
+            <md-button class="md-raised" ng-click="edit('OK')">
                 ΕΝΗΜΕΡΩΣΗ
             </md-button>
-            <md-button class="md-raised md-warn" ng-click="answer('OK')">
+            <md-button class="md-raised md-warn" ng-click="delete('OK')">
                 ΔΙΑΓΡΑΦΗ
             </md-button>
         </section>

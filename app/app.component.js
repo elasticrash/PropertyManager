@@ -92,13 +92,22 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         $scope.showProperty = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
-                controller: DialogController,
+                controller: 'HouseController',
                 templateUrl: 'app/forms/property.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
             });
+        };
+
+        $scope.hide = function () {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+        $scope.answer = function (answer, type) {
         };
     })
     .config(function ($mdThemingProvider) {
@@ -208,6 +217,7 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             writeTenant()
                 .then(
                 function (tennant) {
+                    loadRemoteData();
                 });
             $mdDialog.hide(answer);
         };
@@ -220,6 +230,27 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
                     first_name: $scope.tenant.first_name,
                     last_name: $scope.tenant.last_name,
                     afm: $scope.tenant.afm
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+
+        //validation needed
+        $scope.delete = function(answer)
+        {
+            deleteTenant()
+                .then(
+                function (tennant) {
+                    loadRemoteData();
+                });
+        }
+
+        function deleteTenant() {
+            var request = $http({
+                method: "post",
+                url: "/api/tenant/delete",
+                params: {
+                    tenant_id: $scope.selected[0].tenant_id
                 }
             });
             return ( request.then(handleSuccess, handleError) );
@@ -259,7 +290,7 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
                             .parent(angular.element(document.querySelector('#popupContainer')))
                             .clickOutsideToClose(true)
                             .title('ΠΡΟΣΟΧΗ')
-                            .textContent('ΕΙΣΤΑΙ ΣΙΓΟΥΡΟΙ ΟΤΙ Ο ' + selectedProperties.dataObj.tenants[0].last_name
+                            .textContent('ΕΙΣΤΕ ΣΙΓΟΥΡΟΙ ΟΤΙ Ο ' + selectedProperties.dataObj.tenants[0].last_name
                             + ' ΕΝΟΙΚΙΑΣΕ ΤΟ ' + selectedProperties.dataObj.properties[0].streetname
                             + ' ' + selectedProperties.dataObj.properties[0].streetnumber)
                             .ariaLabel('Alert Dialog Demo')
@@ -346,72 +377,3 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             $scope.months = newproperties;
         }
     });
-
-
-function DialogController($scope, $mdDialog, $http, $q) {
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function (answer, type) {
-        if (type === 'TENANT') {
-            writeTenant()
-                .then(
-                function (tennant) {
-                    applyMonths(tennant);
-                });
-        }
-        $mdDialog.hide(answer);
-    };
-
-    function writeTenant() {
-        var request = $http({
-            method: "post",
-            url: "/api/tenant/add",
-            params: {
-                first_name: $scope.tenant.first_name,
-                last_name: $scope.tenant.last_name,
-                afm: $scope.tenant.afm
-            }
-        });
-        return ( request.then(handleSuccess, handleError) );
-    }
-
-    $scope.months = [];
-    loadMonths();
-    function readMonths() {
-        var request = $http({
-            method: "get",
-            url: "/api/months/list"
-        });
-        return ( request.then(handleSuccess, handleError) );
-    }
-
-    function handleSuccess(response) {
-        return response.data;
-    }
-
-    function handleError(response) {
-        if (
-            !angular.isObject(response.data) || !response.data.message
-        ) {
-            return ( $q.reject("An unknown error occurred.") );
-        }
-        return ( $q.reject(response.data.message) );
-    }
-
-    function loadMonths() {
-        readMonths()
-            .then(
-            function (months) {
-                applyMonths(months);
-            }
-        );
-    }
-
-    function applyMonths(newproperties) {
-        $scope.months = newproperties;
-    }
-}

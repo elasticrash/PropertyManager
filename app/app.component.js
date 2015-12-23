@@ -214,12 +214,19 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             $mdDialog.cancel();
         };
         $scope.answer = function (answer) {
-            writeTenant()
-                .then(
-                function (tennant) {
-                    loadRemoteData();
-                });
-            $mdDialog.hide(answer);
+            if(answer === 'OK') {
+                writeTenant()
+                    .then(
+                    function (tennant) {
+                        loadRemoteData();
+                    });
+                loadRemoteData();
+                $mdDialog.hide(answer)
+            }
+            else
+            {
+                $mdDialog.hide(answer)
+            }
         };
 
         function writeTenant() {
@@ -238,11 +245,20 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         //validation needed
         $scope.delete = function(answer)
         {
-            deleteTenant()
-                .then(
-                function (tennant) {
-                    loadRemoteData();
-                });
+            var confirm = $mdDialog.confirm()
+                .title('Διαγραφή Ενοικιαστή')
+                .textContent('Θέλετε να διαγράψεις τον '+ $scope.selected[0].last_name)
+                .ariaLabel('Lucky day')
+                .ok('NAI!')
+                .cancel('OXI');
+            $mdDialog.show(confirm).then(function() {
+                deleteTenant()
+                    .then(
+                    function (tennant) {
+                        loadRemoteData();
+                    });
+            }, function() {
+            });
         }
 
         function deleteTenant() {

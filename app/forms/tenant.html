@@ -3,11 +3,11 @@
         <div>
             <md-input-container>
                 <label>Όνομα</label>
-                <input ng-model="tenant.first_name">
+                <input ng-model="tenant.first_name" required>
             </md-input-container>
             <md-input-container>
                 <label>Επίθετο</label>
-                <input ng-model="tenant.last_name">
+                <input ng-model="tenant.last_name" required>
             </md-input-container>
         </div>
     </md-content>
@@ -22,7 +22,7 @@
 </form>
 <md-dialog-actions layout="row">
     <span flex></span>
-    <md-button class="md-raised md-primary" ng-click="answer('OK')">
+    <md-button class="md-raised md-primary" ng-click="answer('TENANT')">
         OK
     </md-button>
     <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">

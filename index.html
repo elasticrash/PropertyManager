@@ -87,7 +87,7 @@
     </md-data-table-container>
     <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{properties.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
 </div>
-<div ng-controller="TennantController" ng-cloak>
+<div ng-controller="TenantController" ng-cloak>
 
     <md-data-table-toolbar ng-hide="selected.length">
         <h2 class="md-title">Ενοικιαστές</h2>
@@ -100,10 +100,10 @@
     <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
         <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
         <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
-            <md-button class="md-raised" ng-click="edit('OK')">
+            <md-button class="md-raised" ng-click="edit($event)">
                 ΕΝΗΜΕΡΩΣΗ
             </md-button>
-            <md-button class="md-raised md-warn" ng-click="delete('OK')">
+            <md-button class="md-raised md-warn" ng-click="delete($event)">
                 ΔΙΑΓΡΑΦΗ
             </md-button>
         </section>

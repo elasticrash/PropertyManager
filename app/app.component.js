@@ -116,12 +116,16 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             .primaryPalette('yellow')
             .dark();
     })
-    .controller('TennantController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
+    .controller('TenantController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
         $scope.tenants = [];
         $scope.selected = [];
         selectedProperties.dataObj.tenants = $scope.selected;
+        var initTenants = [];
 
-        var initTennants = [];
+        $scope.$on('RefreshData', function(event) {
+            loadRemoteData();
+        });
+
         $scope.query = {
             filter: '',
             order: 'streetname',
@@ -161,9 +165,9 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
 
         function applyRemoteData(newproperties) {
             $scope.tenants.total = newproperties.length;
-            initTennants = newproperties;
+            initTenants = newproperties;
             $scope.tenants = newproperties.slice(0, $scope.query.limit);
-            $scope.tenants.total = initTennants.length;
+            $scope.tenants.total = initTenants.length;
         }
 
         $scope.search = function (predicate) {
@@ -191,75 +195,60 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         };
 
         $scope.onPaginationChange = function (page, limit) {
-            $scope.tenants = initTennants.slice((page - 1) * limit, (page - 1) * limit + limit);
-            $scope.tenants.total = initTennants.length;
+            $scope.tenants = initTenants.slice((page - 1) * limit, (page - 1) * limit + limit);
+            $scope.tenants.total = initTenants.length;
         };
 
         $scope.showTenant = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
-                controller: 'TennantController',
+                controller: TenantDialogController,
                 templateUrl: 'app/forms/tenant.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: true,
-                fullscreen: useFullScreen
+                fullscreen: useFullScreen,
+                scope: $scope,
+                preserveScope: true,
+                locals : {tenant: {}}
             });
         };
-
-        $scope.hide = function () {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function (answer) {
-            if(answer === 'OK') {
-                writeTenant()
-                    .then(
-                    function (tennant) {
-                        loadRemoteData();
-                    });
-                loadRemoteData();
-                $mdDialog.hide(answer)
-            }
-            else
-            {
-                $mdDialog.hide(answer)
-            }
-        };
-
-        function writeTenant() {
-            var request = $http({
-                method: "post",
-                url: "/api/tenant/add",
-                params: {
-                    first_name: $scope.tenant.first_name,
-                    last_name: $scope.tenant.last_name,
-                    afm: $scope.tenant.afm
-                }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
 
         //validation needed
-        $scope.delete = function(answer)
+        $scope.delete = function(ev)
         {
             var confirm = $mdDialog.confirm()
                 .title('Διαγραφή Ενοικιαστή')
                 .textContent('Θέλετε να διαγράψεις τον '+ $scope.selected[0].last_name)
                 .ariaLabel('Lucky day')
+                .targetEvent(ev)
                 .ok('NAI!')
                 .cancel('OXI');
             $mdDialog.show(confirm).then(function() {
                 deleteTenant()
                     .then(
-                    function (tennant) {
+                    function (tenant) {
                         loadRemoteData();
                     });
             }, function() {
             });
-        }
+        };
+
+        $scope.edit = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            var tenant = $scope.selected[0];
+            $mdDialog.show({
+                controller: TenantDialogController,
+                templateUrl: 'app/forms/tenant.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                targetEvent: ev,
+                fullscreen: useFullScreen,
+                scope: $scope,
+                preserveScope: true,
+                locals : {tenant: tenant}
+            });
+        };
 
         function deleteTenant() {
             var request = $http({
@@ -274,6 +263,7 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
 
     })
     .controller('PaymentController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
+        $scope.selected = [];
 
         $scope.ConnectPropertyAndTenant = function (ev) {
             var selectprop = 0;
@@ -393,3 +383,73 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             $scope.months = newproperties;
         }
     });
+
+function TenantDialogController($scope, $http, $q,$mdDialog, tenant) {
+    $scope.tenant = tenant;
+    $scope.closeDialog = function () {
+        $mdDialog.hide();
+    };
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function (answer) {
+        if(answer === 'TENANT') {
+            writeTenant()
+                .then(
+                function (tenant) {
+                    $scope.$emit('RefreshData');
+                });
+            $scope.$emit('RefreshData');
+            $mdDialog.hide(answer)
+        }
+        else
+        {
+            $mdDialog.hide(answer)
+        }
+    };
+
+    function writeTenant() {
+        if($scope.tenant.tenant_id){
+            var request = $http({
+                method: "post",
+                url: "/api/tenant/update",
+                params: {
+                    tenant_id: $scope.tenant.tenant_id,
+                    first_name: $scope.tenant.first_name,
+                    last_name: $scope.tenant.last_name,
+                    afm: $scope.tenant.afm
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+        else {
+            var request = $http({
+                method: "post",
+                url: "/api/tenant/add",
+                params: {
+                    first_name: $scope.tenant.first_name,
+                    last_name: $scope.tenant.last_name,
+                    afm: $scope.tenant.afm
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+    }
+
+    function handleSuccess(response) {
+        return response.data;
+    }
+
+    function handleError(response) {
+        if (
+            !angular.isObject(response.data) || !response.data.message
+        ) {
+            return ( $q.reject("An unknown error occurred.") );
+        }
+        return ( $q.reject(response.data.message) );
+    }
+}

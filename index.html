@@ -14,6 +14,7 @@
     <script src="node_modules/angular-material/angular-material.min.js"></script>
     <!-- 2. Load our 'modules' -->
     <script src='app/app.component.js'></script>
+    <script src='app/dialogControllers.js'></script>
 
 <style>
     .md-datepicker-input-container {
@@ -36,7 +37,7 @@
     </md-toolbar>
 </div>
 
-    <div ng-controller="HouseController" ng-cloak>
+    <div ng-controller="PropertyController" ng-cloak>
     <md-data-table-toolbar ng-hide="selected.length">
         <h2 class="md-title">Ακίνητα</h2>
         <div flex></div>
@@ -48,10 +49,10 @@
     <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
         <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
         <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
-        <md-button class="md-raised" ng-click="answer('OK')">
+        <md-button class="md-raised" ng-click="edit($event)">
             ΕΝΗΜΕΡΩΣΗ
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="answer('OK')">
+        <md-button class="md-raised md-warn" ng-click="delete($event)">
             ΔΙΑΓΡΑΦΗ
         </md-button>
         </section>

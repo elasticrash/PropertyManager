@@ -6,7 +6,7 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         var _dataObj = {};
         this.dataObj = _dataObj;
     })
-    .controller('HouseController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
+    .controller('PropertyController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
         $scope.title1 = 'TESTING';
         $scope.properties = [];
         $scope.selected = [];
@@ -14,6 +14,9 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
 
         var initProperties = [];
 
+        $scope.$on('RefreshProperties', function(event) {
+            loadProperties();
+        });
 
         $scope.query = {
             filter: '',
@@ -92,12 +95,15 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         $scope.showProperty = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
-                controller: 'HouseController',
+                controller: PropertyDialogController,
                 templateUrl: 'app/forms/property.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: true,
-                fullscreen: useFullScreen
+                fullscreen: useFullScreen,
+                scope: $scope,
+                preserveScope: true,
+                locals : {property: {}}
             });
         };
 
@@ -109,6 +115,52 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         };
         $scope.answer = function (answer, type) {
         };
+
+        $scope.delete = function(ev)
+        {
+            var confirm = $mdDialog.confirm()
+                .title('Διαγραφή Ακινήτου')
+                .textContent('Θέλετε να διαγράψεις τον '+ $scope.selected[0].streetname)
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('NAI!')
+                .cancel('OXI');
+            $mdDialog.show(confirm).then(function() {
+                deleteTenant()
+                    .then(
+                    function (tenant) {
+                        loadProperties();
+                    });
+            }, function() {
+            });
+        };
+
+        $scope.edit = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            var property = $scope.selected[0];
+            $mdDialog.show({
+                controller: PropertyDialogController,
+                templateUrl: 'app/forms/property.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                targetEvent: ev,
+                fullscreen: useFullScreen,
+                scope: $scope,
+                preserveScope: true,
+                locals : {property: property}
+            });
+        };
+
+        function deleteProperty() {
+            var request = $http({
+                method: "post",
+                url: "/api/property/delete",
+                params: {
+                    tenant_id: $scope.selected[0].property_id
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
     })
     .config(function ($mdThemingProvider) {
         // Configure a dark theme with primary foreground yellow
@@ -214,7 +266,6 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
             });
         };
 
-        //validation needed
         $scope.delete = function(ev)
         {
             var confirm = $mdDialog.confirm()
@@ -384,72 +435,4 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         }
     });
 
-function TenantDialogController($scope, $http, $q,$mdDialog, tenant) {
-    $scope.tenant = tenant;
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
 
-    $scope.hide = function () {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function (answer) {
-        if(answer === 'TENANT') {
-            writeTenant()
-                .then(
-                function (tenant) {
-                    $scope.$emit('RefreshData');
-                });
-            $scope.$emit('RefreshData');
-            $mdDialog.hide(answer)
-        }
-        else
-        {
-            $mdDialog.hide(answer)
-        }
-    };
-
-    function writeTenant() {
-        if($scope.tenant.tenant_id){
-            var request = $http({
-                method: "post",
-                url: "/api/tenant/update",
-                params: {
-                    tenant_id: $scope.tenant.tenant_id,
-                    first_name: $scope.tenant.first_name,
-                    last_name: $scope.tenant.last_name,
-                    afm: $scope.tenant.afm
-                }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
-        else {
-            var request = $http({
-                method: "post",
-                url: "/api/tenant/add",
-                params: {
-                    first_name: $scope.tenant.first_name,
-                    last_name: $scope.tenant.last_name,
-                    afm: $scope.tenant.afm
-                }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
-    }
-
-    function handleSuccess(response) {
-        return response.data;
-    }
-
-    function handleError(response) {
-        if (
-            !angular.isObject(response.data) || !response.data.message
-        ) {
-            return ( $q.reject("An unknown error occurred.") );
-        }
-        return ( $q.reject(response.data.message) );
-    }
-}

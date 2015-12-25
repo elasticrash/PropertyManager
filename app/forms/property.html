@@ -7,7 +7,7 @@
             </md-input-container>
             <md-input-container>
                 <label>Αριθμός</label>
-                <input ng-model="property.number">
+                <input ng-model="property.streetnumber">
             </md-input-container>
         </div>
     </md-content>
@@ -17,7 +17,7 @@
             </md-datepicker>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Εμβαδόν</label>
-                <input ng-model="property.firstName">
+                <input ng-model="property.area">
             </md-input-container>
             <div layout-gt-sm="row">
                 <md-input-container class="md-block">
@@ -37,7 +37,7 @@
 </form>
 <md-dialog-actions layout="row">
     <span flex></span>
-    <md-button class="md-raised md-primary" ng-click="answer('OK')">
+    <md-button class="md-raised md-primary" ng-click="answer('PROPERTY')">
         OK
     </md-button>
     <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">

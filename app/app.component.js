@@ -1,8 +1,8 @@
 /**
  * Created by tougo on 17/12/15.
  */
-angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
-    .service('selectedProperties', function () {
+var app = angular.module('PropertyManager', ['md.data.table', 'ngMaterial','pascalprecht.translate']);
+app.service('selectedProperties', function () {
         var _dataObj = {};
         this.dataObj = _dataObj;
     })
@@ -433,6 +433,11 @@ angular.module('PropertyManager', ['md.data.table', 'ngMaterial'])
         function applyMonths(newproperties) {
             $scope.months = newproperties;
         }
+    })
+    .controller('LanguageSwitchController', function ($scope, $translate) {
+        $scope.changeLanguage = function (key) {
+            $translate.use(key);
+        };
     });
 
 

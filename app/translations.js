@@ -8,7 +8,8 @@ app.config(function ($translateProvider) {
         PROP_TENANT: 'PROPERTY+TENANT',
         NEW_PROPERTY: 'NEW PROPERTY',
         UPDATE: 'UPDATE',
-        DELETE: 'DELETE'
+        DELETE: 'DELETE',
+        amount: 'amount'
     });
     $translateProvider.translations('el', {
         BUTTON_LANG_EN: 'ΑΓΓΛΙΚΑ',
@@ -16,7 +17,8 @@ app.config(function ($translateProvider) {
         PROP_TENANT: 'ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ',
         NEW_PROPERTY: 'ΝΕΟ ΑΚΙΝΗΤΟ',
         UPDATE: 'ΕΝΗΜΕΡΩΣΗ',
-        DELETE: 'ΔΙΑΓΡΑΦΗ'
+        DELETE: 'ΔΙΑΓΡΑΦΗ',
+        amount: 'Ποσό'
     });
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.preferredLanguage('el');
 });

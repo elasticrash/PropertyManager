@@ -57,7 +57,6 @@ app.service('selectedProperties', function () {
         }
 
         function applyProperties(newproperties) {
-            $scope.properties.total = newproperties.length;
             initProperties = newproperties;
             $scope.properties = newproperties.slice(0, $scope.query.limit);
             $scope.properties.total = initProperties.length;
@@ -87,7 +86,7 @@ app.service('selectedProperties', function () {
             return $scope.properties;
         };
 
-        $scope.onPaginationChange = function (page, limit) {
+        $scope.onPaginate  = function (page, limit) {
             $scope.properties = initProperties.slice((page - 1) * limit, (page - 1) * limit + limit);
             $scope.properties.total = initProperties.length;
         };

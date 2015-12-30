@@ -9,7 +9,7 @@
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angular-animate/angular-animate.min.js"></script>
     <script src="node_modules/angular-aria/angular-aria.min.js"></script>
-    <script src="node_modules/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script src="node_modules/angular-material-data-table/dist/md-data-table.js"></script>
     <script src="node_modules/angular-translate/dist/angular-translate.js"></script>
 
 
@@ -19,170 +19,214 @@
     <script src='app/dialogtemplateControllers.js'></script>
     <script src='app/translations.js' charset="UTF-8"></script>
 
-<style>
-    .md-datepicker-input-container {
-        width: 250px;
-    }
-    .md-datepicker-input {
-        min-width: 250px;
-        max-width: 400px
-    }
-</style>
+    <style>
+        .md-datepicker-input-container {
+            width: 250px;
+        }
+
+        .md-datepicker-input {
+            min-width: 250px;
+            max-width: 400px
+        }
+    </style>
 </head>
 
 <!-- 3. Display the application -->
 <body ng-app="PropertyManager" ng-cloak>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
-            <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)" translate="PROP_TENANT"></md-button>
-            </div>
-            <span flex></span>
-            <div ng-controller="LanguageSwitchController">
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
+            <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)"
+                       translate="PROP_TENANT"></md-button>
+        </div>
+        <span flex></span>
+
+        <div ng-controller="LanguageSwitchController">
             <md-button class="md-raised" ng-click="changeLanguage('el')" translate="BUTTON_LANG_GR"></md-button>
             <md-button class="md-raised" ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></md-button>
-            </div>
+        </div>
+    </div>
+</md-toolbar>
+
+<div ng-controller="PropertyController" ng-cloak>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Ακίνητα</h2>
+
+            <div flex></div>
+            <md-button class="md-raised" ng-click="showProperty($event)" translate="NEW_PROPERTY"></md-button>
         </div>
     </md-toolbar>
 
-    <div ng-controller="PropertyController" ng-cloak>
-    <md-data-table-toolbar ng-hide="selected.length">
-        <h2 class="md-title">Ακίνητα</h2>
-        <div flex></div>
-        <md-button class="md-raised md-primary" ng-click="showProperty($event)">
-            <i class="material-icons md-dark" translate="NEW_PROPERTY"></i>
-        </md-button>
-    </md-data-table-toolbar>
-
-    <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
-        <md-button class="md-raised" ng-click="edit($event)" translate="UPDATE">
-        </md-button>
-        <md-button class="md-raised md-warn" ng-click="delete($event)" translate="DELETE">
-        </md-button>
-        </section>
-    </md-data-table-toolbar>
-
-    <md-data-table-container>
-        <table md-data-table md-row-select="selected" md-progress="deferred" class="md-primary">
-            <thead md-order="query.order" md-trigger="onOrderChange">
-            <tr>
-                <th name="Οδός" order-by="streetname"></th>
-                <th numeric name="Αριθμός" order-by="streetnumber"></th>
-                <th numeric name="Εμβαδόν" unit="m2" order-by="area"></th>
-                <th name="Περιγραφή" order-by="description"></th>
-                <th name="Όροφος" order-by="floor"></th>
-                <th numeric name="Ποσοστό" unit="%" order-by="percentage"></th>
-                <th name="Ημερομηνία Κατασκευής" order-by="constructionDate"></th>
-                <th name="Ενοικιαστής" order-by="last_name"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr md-auto-select ng-repeat="property in properties">
-                <td>{{property.streetname}}</td>
-                <td>{{property.streetnumber}}</td>
-                <td>{{property.area | number: 1}}</td>
-                <td>{{property.description}}</td>
-                <td>{{property.floor | number: 1}}</td>
-                <td>{{property.percentage}}</td>
-                <td>{{property.percenconstructionDatetage}}</td>
-                <td show-unit>{{property.first_name}} {{property.last_name}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </md-data-table-container>
-    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{properties.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
-</div>
-<div ng-controller="TenantController" ng-cloak>
-
-    <md-data-table-toolbar ng-hide="selected.length">
-        <h2 class="md-title">Ενοικιαστές</h2>
-        <div flex></div>
-        <md-button class="md-raised md-primary" ng-click="showTenant($event)">
-            <i class="material-icons md-dark">ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ</i>
-        </md-button>
-    </md-data-table-toolbar>
-
-    <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
+    <md-toolbar class="md-toolbar-tools alternate" ng-show="selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
             <md-button class="md-raised" ng-click="edit($event)" translate="UPDATE">
             </md-button>
             <md-button class="md-raised md-warn" ng-click="delete($event)" translate="DELETE">
             </md-button>
-        </section>
-    </md-data-table-toolbar>
+        </div>
+    </md-toolbar>
 
-    <md-data-table-container>
-        <table md-data-table md-row-select="selected" md-progress="deferred">
-            <thead md-order="query.order" md-trigger="onOrderChange">
+    <md-table-container>
+        <table md-table md-row-select ng-model="selected">
+            <thead md-head md-order="query.order" md-on-reorder="onOrderChange">
             <tr>
-                <th name="Επίθετο" order-by="last_name"></th>
-                <th name="Όνομα" order-by="first_name"></th>
-                <th numeric name="ΑΦΜ" order-by="afm"></th>
+                <th md-column md-order-by="streetname">
+                    <span class="material-icons md-dark" translate="STREETNAME"></span>
+                </th>
+                <th md-column md-numeric md-order-by="streetnumber">
+                    <span class="material-icons md-dark" translate="STREETNUMBER"></span>
+                </th>
+                <th md-column md-numeric md-order-by="area">
+                    <span class="material-icons md-dark" translate="AREA"></span>
+                </th>
+                <th md-column name="Περιγραφή" md-order-by="description">
+                    <span class="material-icons md-dark" translate="DESCRIPTION"></span>
+                </th>
+                <th md-column md-order-by="floor">
+                    <span class="material-icons md-dark" translate="FLOOR"></span>
+                </th>
+                <th md-column numeric unit="%" md-order-by="percentage">
+                    <span class="material-icons md-dark" translate="PERCENTAGE"></span>
+                </th>
+                <th md-column md-order-by="constructionDate">
+                    <span class="material-icons md-dark" translate="CONSTRUCTIONDATE"></span>
+                </th>
+                <th md-column md-order-by="last_name">
+                    <span class="material-icons md-dark" translate="TENANT"></span>
+                </th>
             </tr>
             </thead>
-            <tbody>
-            <tr md-auto-select ng-repeat="tenant in tenants">
-                <td>{{tenant.last_name}}</td>
-                <td>{{tenant.first_name}}</td>
-                <td>{{tenant.afm}}</td>
+            <tbody md-body>
+            <tr md-row md-select="property" md-auto-select ng-repeat="property in properties">
+                <td md-cell>{{property.streetname}}</td>
+                <td md-cell>{{property.streetnumber}}</td>
+                <td md-cell>{{property.area}}</td>
+                <td md-cell>{{property.description}}</td>
+                <td md-cell>{{property.floor}}</td>
+                <td md-cell>{{property.percentage}}</td>
+                <td md-cell>{{property.constructionDate}}</td>
+                <td md-cell>{{property.first_name}} {{property.last_name}}</td>
             </tr>
             </tbody>
         </table>
-    </md-data-table-container>
-    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{properties.total}}"
+                         md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+</div>
+
+<div ng-controller="TenantController" ng-cloak>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Ενοικιαστές</h2>
+
+            <div flex></div>
+            <md-button class="md-raised" ng-click="showTenant($event)" translate="NEW_TENANT">
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
+        <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
+        <md-button class="md-raised" ng-click="edit($event)" translate="UPDATE">
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="delete($event)" translate="DELETE">
+        </md-button>
+    </md-toolbar>
+
+    <md-table-container>
+        <table md-table md-row-select ng-model="selected">
+            <thead md-head md-order="query.order" md-trigger="onOrderChange">
+            <tr>
+                <th md-column name="Επίθετο" order-by="last_name">
+                    <span class="material-icons md-dark" translate="LASTNAME"></span>
+                </th>
+                <th md-column name="Όνομα" order-by="first_name">
+                    <span class="material-icons md-dark" translate="FIRSTNAME"></span>
+                </th>
+                <th md-column name="ΑΦΜ" order-by="afm">
+                    <span class="material-icons md-dark" translate="AFM"></span>
+                </th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="tenant" md-auto-select ng-repeat="tenant in tenants">
+                <td md-cell>{{tenant.last_name}}</td>
+                <td md-cell>{{tenant.first_name}}</td>
+                <td md-cell>{{tenant.afm}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}"
+                         md-trigger="onPaginationChange"></md-table-pagination>
 </div>
 
 <div ng-controller="PaymentController" ng-cloak>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Πληρωμές</h2>
 
-    <md-data-table-toolbar ng-hide="selected.length">
-        <h2 class="md-title">Πληρωμές</h2>
-        <div flex></div>
-        <md-button class="md-raised md-primary" ng-click="showPayment($event)">
-            <i class="material-icons md-dark">ΝΕΑ ΠΛΗΡΩΜΗ</i>
-        </md-button>
-    </md-data-table-toolbar>
+            <div flex></div>
+            <md-button class="md-raised" ng-click="showPayment($event)" translate="NEW_PAYMENT">
+            </md-button>
+        </div>
+    </md-toolbar>
 
-    <md-data-table-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
+    <md-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
         <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
         <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
             <md-button class="md-raised" ng-click="answer('OK')" translate="UPDATE">
             </md-button>
             </md-button>
         </section>
-    </md-data-table-toolbar>
+    </md-toolbar>
 
-    <md-data-table-container>
-        <table md-data-table md-row-select="selected" md-progress="deferred">
-            <thead md-order="query.order" md-trigger="onOrderChange">
+    <md-table-container>
+        <table md-table md-row-select ng-model="selected">
+            <thead md-head md-order="query.order" md-trigger="onOrderChange">
             <tr>
-                <th name="Ποσό" order-by="amount"></th>
-                <th name="Ημερομηνία Πληρωμής" order-by="payDate"></th>
-                <th numeric name="Μήνας" order-by="monthId"></th>
-                <th numeric name="Οδός" order-by="streetname"></th>
-                <th numeric name="Αριθμός" order-by="streetnumber"></th>
-                <th numeric name="Όνομα" order-by="first_name"></th>
-                <th numeric name="Επίθετο" order-by="last_name"></th>
+                <th md-column name="Ποσό" order-by="amount">
+                    <span class="material-icons md-dark" translate="AMOUNT"></span>
+                </th>
+                <th md-column name="Ημερομηνία Πληρωμής" order-by="payDate">
+                    <span class="material-icons md-dark" translate="PAYDATE"></span>
+                </th>
+                <th md-column numeric name="Μήνας" order-by="monthId">
+                    <span class="material-icons md-dark" translate="MONTH"></span>
+                </th>
+                <th md-column name="Οδός" order-by="streetname">
+                    <span class="material-icons md-dark" translate="STREETNAME"></span>
+                </th>
+                <th md-column numeric name="Αριθμός" order-by="streetnumber">
+                    <span class="material-icons md-dark" translate="STREETNUMBER"></span>
+                </th>
+                <th md-column name="Όνομα" order-by="first_name">
+                    <span class="material-icons md-dark" translate="FIRSTNAME"></span>
+                </th>
+                <th md-column name="Επίθετο" order-by="last_name">
+                    <span class="material-icons md-dark" translate="LASTNAME"></span>
+                </th>
 
             </tr>
             </thead>
-            <tbody>
-            <tr md-auto-select ng-repeat="payment in payments">
-                <td>{{payment.amount}}</td>
-                <td>{{payment.payDate}}</td>
-                <td>{{payment.monthId}}</td>
-                <td>{{payment.streetname}}</td>
-                <td>{{payment.streetnumber}}</td>
-                <td>{{payment.first_name}}</td>
-                <td>{{payment.last_name}}</td>
+            <tbody md-body>
+            <tr md-row md-select="payment" md-auto-select ng-repeat="payment in payments">
+                <td md-cell>{{payment.amount}}</td>
+                <td md-cell>{{payment.payDate}}</td>
+                <td md-cell>{{payment.monthId}}</td>
+                <td md-cell>{{payment.streetname}}</td>
+                <td md-cell>{{payment.streetnumber}}</td>
+                <td md-cell>{{payment.first_name}}</td>
+                <td md-cell>{{payment.last_name}}</td>
 
             </tr>
             </tbody>
         </table>
-    </md-data-table-container>
-    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}"
+                         md-trigger="onPaginationChange"></md-table-pagination>
 </div>
 </body>
 

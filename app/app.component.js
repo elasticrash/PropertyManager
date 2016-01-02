@@ -1,7 +1,7 @@
 /**
  * Created by tougo on 17/12/15.
  */
-var app = angular.module('PropertyManager', ['md.data.table', 'ngMaterial','pascalprecht.translate']);
+var app = angular.module('PropertyManager', ['md.data.table', 'ngMaterial','pascalprecht.translate', 'ngSanitize']);
 app.service('selectedProperties', function () {
         var _dataObj = {};
         this.dataObj = _dataObj;
@@ -247,7 +247,7 @@ app.service('selectedProperties', function () {
             $scope.tenants.total = initTenants.length;
         };
 
-        $scope.onPaginationChange = function (page, limit) {
+        $scope.onPaginate = function (page, limit) {
             $scope.tenants = initTenants.slice((page - 1) * limit, (page - 1) * limit + limit);
             $scope.tenants.total = initTenants.length;
         };

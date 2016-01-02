@@ -12,6 +12,7 @@
     <script src="node_modules/angular-aria/angular-aria.min.js"></script>
     <script src="node_modules/angular-material-data-table/dist/md-data-table.js"></script>
     <script src="node_modules/angular-translate/dist/angular-translate.js"></script>
+    <script src="node_modules/angular-sanitize/angular-sanitize.js"></script>
 
 
     <script src="node_modules/angular-material/angular-material.min.js"></script>
@@ -38,15 +39,15 @@
     <div class="md-toolbar-tools">
         <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
             <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)"
-                       translate="PROP_TENANT">
+                       translate="PROP_TENANT" aria-label="Connect Property to Tenant">
 
             </md-button>
         </div>
         <div flex></div>
 
         <div ng-controller="LanguageSwitchController">
-            <md-button class="md-raised" ng-click="changeLanguage('el')" translate="BUTTON_LANG_GR"></md-button>
-            <md-button class="md-raised" ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></md-button>
+            <md-button class="md-raised" aria-label="GREEK" ng-click="changeLanguage('el')" translate="BUTTON_LANG_GR"></md-button>
+            <md-button class="md-raised" aria-label="ENGLISH" ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></md-button>
         </div>
     </div>
 </md-toolbar>
@@ -150,15 +151,15 @@
 
     <md-table-container>
         <table md-table md-row-select ng-model="selected">
-            <thead md-head md-order="query.order" md-trigger="onOrderChange">
+            <thead md-head md-order="query.order" md-on-reorder="onOrderChange">
             <tr>
-                <th md-column name="Επίθετο" order-by="last_name">
+                <th md-column name="Επίθετο" md-order-by="last_name">
                     <span class="md-dark" translate="LASTNAME"></span>
                 </th>
-                <th md-column name="Όνομα" order-by="first_name">
+                <th md-column name="Όνομα" md-order-by="first_name">
                     <span class="md-dark" translate="FIRSTNAME"></span>
                 </th>
-                <th md-column name="ΑΦΜ" order-by="afm">
+                <th md-column name="ΑΦΜ" md-order-by="afm">
                     <span class="md-dark" translate="AFM"></span>
                 </th>
             </tr>
@@ -173,7 +174,7 @@
         </table>
     </md-table-container>
     <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}"
-                         md-trigger="onPaginationChange"></md-table-pagination>
+                         md-on-paginate="onPaginate" md-page-select></md-table-pagination>
 </div>
 
 <div ng-controller="PaymentController" ng-cloak>
@@ -203,27 +204,27 @@
 
     <md-table-container>
         <table md-table md-row-select ng-model="selected">
-            <thead md-head md-order="query.order" md-trigger="onOrderChange">
+            <thead md-head md-order="query.order" md-on-reorder="onOrderChange">
             <tr>
-                <th md-column name="Ποσό" order-by="amount">
+                <th md-column name="Ποσό" md-order-by="amount">
                     <span class="md-dark" translate="AMOUNT"></span>
                 </th>
-                <th md-column name="Ημερομηνία Πληρωμής" order-by="payDate">
+                <th md-column name="Ημερομηνία Πληρωμής" md-order-by="payDate">
                     <span class="md-dark" translate="PAYDATE"></span>
                 </th>
-                <th md-column numeric name="Μήνας" order-by="monthId">
+                <th md-column numeric name="Μήνας" md-order-by="monthId">
                     <span class="md-dark" translate="MONTH"></span>
                 </th>
-                <th md-column name="Οδός" order-by="streetname">
+                <th md-column name="Οδός" md-order-by="streetname">
                     <span class="md-dark" translate="STREETNAME"></span>
                 </th>
-                <th md-column numeric name="Αριθμός" order-by="streetnumber">
+                <th md-column numeric name="Αριθμός" md-order-by="streetnumber">
                     <span class="md-dark" translate="STREETNUMBER"></span>
                 </th>
-                <th md-column name="Όνομα" order-by="first_name">
+                <th md-column name="Όνομα" md-order-by="first_name">
                     <span class="md-dark" translate="FIRSTNAME"></span>
                 </th>
-                <th md-column name="Επίθετο" order-by="last_name">
+                <th md-column name="Επίθετο" md-order-by="last_name">
                     <span class="md-dark" translate="LASTNAME"></span>
                 </th>
 
@@ -244,7 +245,7 @@
         </table>
     </md-table-container>
     <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tenants.total}}"
-                         md-trigger="onPaginationChange"></md-table-pagination>
+                         md-on-paginate="onPaginate" md-page-select></md-table-pagination>
 </div>
 </body>
 

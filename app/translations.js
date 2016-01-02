@@ -23,7 +23,7 @@ app.config(function ($translateProvider) {
         AMOUNT: 'Amount',
         PAYDATE: 'Payment date',
         MONTH: 'Month',
-        NEW_PAYMENT: 'Payment'
+        PAYMENT: 'Payment'
     });
     $translateProvider.translations('el', {
         BUTTON_LANG_EN: 'ΑΓΓΛΙΚΑ',
@@ -49,4 +49,5 @@ app.config(function ($translateProvider) {
         PAYMENT: 'Πληρωμή'
     });
     $translateProvider.preferredLanguage('el');
+    $translateProvider.useSanitizeValueStrategy('sanitize');
 });

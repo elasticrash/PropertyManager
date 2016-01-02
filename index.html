@@ -5,6 +5,7 @@
     <title>Property Manager</title>
     <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
     <link rel="stylesheet" href="node_modules/angular-material-data-table/dist/md-data-table.css">
+    <link href="/app/icons.css" rel="stylesheet" type="text/css"/>
     <!-- 1. Load libraries -->
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angular-animate/angular-animate.min.js"></script>
@@ -37,9 +38,11 @@
     <div class="md-toolbar-tools">
         <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
             <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)"
-                       translate="PROP_TENANT"></md-button>
+                       translate="PROP_TENANT">
+
+            </md-button>
         </div>
-        <span flex></span>
+        <div flex></div>
 
         <div ng-controller="LanguageSwitchController">
             <md-button class="md-raised" ng-click="changeLanguage('el')" translate="BUTTON_LANG_GR"></md-button>
@@ -51,19 +54,23 @@
 <div ng-controller="PropertyController" ng-cloak>
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
         <div class="md-toolbar-tools">
-            <h2 class="md-title">Ακίνητα</h2>
-
+            <h2 class="md-title" translate="PROPERTY"></h2>
             <div flex></div>
-            <md-button class="md-raised" ng-click="showProperty($event)" translate="NEW_PROPERTY"></md-button>
+            <md-button class="md-fab md-mini" ng-click="showProperty($event)">
+                <i class="material-icons">add</i>
+            </md-button>
         </div>
     </md-toolbar>
 
-    <md-toolbar class="md-toolbar-tools alternate" ng-show="selected.length">
+    <md-toolbar class="md-toolbar-tools alternate md-hue-3" ng-show="selected.length">
         <div class="md-toolbar-tools" layout-align="space-between">
             <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-            <md-button class="md-raised" ng-click="edit($event)" translate="UPDATE">
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="edit($event)">
+                <i class="material-icons">mode_edit</i>
             </md-button>
-            <md-button class="md-raised md-warn" ng-click="delete($event)" translate="DELETE">
+            <md-button class="md-icon-button md-warn" ng-click="delete($event)">
+                <i class="material-icons">delete</i>
             </md-button>
         </div>
     </md-toolbar>
@@ -73,28 +80,28 @@
             <thead md-head md-order="query.order" md-on-reorder="onOrderChange">
             <tr>
                 <th md-column md-order-by="streetname">
-                    <span class="material-icons md-dark" translate="STREETNAME"></span>
+                    <span class="md-dark" translate="STREETNAME"></span>
                 </th>
                 <th md-column md-numeric md-order-by="streetnumber">
-                    <span class="material-icons md-dark" translate="STREETNUMBER"></span>
+                    <span class="icons md-dark" translate="STREETNUMBER"></span>
                 </th>
                 <th md-column md-numeric md-order-by="area">
-                    <span class="material-icons md-dark" translate="AREA"></span>
+                    <span class="md-dark" translate="AREA"></span>
                 </th>
                 <th md-column name="Περιγραφή" md-order-by="description">
-                    <span class="material-icons md-dark" translate="DESCRIPTION"></span>
+                    <span class="md-dark" translate="DESCRIPTION"></span>
                 </th>
                 <th md-column md-order-by="floor">
-                    <span class="material-icons md-dark" translate="FLOOR"></span>
+                    <span class="md-dark" translate="FLOOR"></span>
                 </th>
                 <th md-column numeric unit="%" md-order-by="percentage">
-                    <span class="material-icons md-dark" translate="PERCENTAGE"></span>
+                    <span class="md-dark" translate="PERCENTAGE"></span>
                 </th>
                 <th md-column md-order-by="constructionDate">
-                    <span class="material-icons md-dark" translate="CONSTRUCTIONDATE"></span>
+                    <span class="md-dark" translate="CONSTRUCTIONDATE"></span>
                 </th>
                 <th md-column md-order-by="last_name">
-                    <span class="material-icons md-dark" translate="TENANT"></span>
+                    <span class="md-dark" translate="TENANT"></span>
                 </th>
             </tr>
             </thead>
@@ -119,20 +126,26 @@
 <div ng-controller="TenantController" ng-cloak>
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
         <div class="md-toolbar-tools">
-            <h2 class="md-title">Ενοικιαστές</h2>
+            <h2 class="md-title" translate="TENANT"></h2>
 
             <div flex></div>
-            <md-button class="md-raised" ng-click="showTenant($event)" translate="NEW_TENANT">
+            <md-button class="md-fab md-mini" ng-click="showTenant($event)">
+                <i class="material-icons">add</i>
             </md-button>
         </div>
     </md-toolbar>
 
-    <md-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <md-button class="md-raised" ng-click="edit($event)" translate="UPDATE">
+    <md-toolbar class="md-toolbar-tools alternate md-hue-3" ng-show="selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="edit($event)">
+            <i class="material-icons">mode_edit</i>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="delete($event)" translate="DELETE">
+        <md-button class="md-icon-button md-warn" ng-click="delete($event)">
+            <i class="material-icons">delete</i>
         </md-button>
+            </div>
     </md-toolbar>
 
     <md-table-container>
@@ -140,13 +153,13 @@
             <thead md-head md-order="query.order" md-trigger="onOrderChange">
             <tr>
                 <th md-column name="Επίθετο" order-by="last_name">
-                    <span class="material-icons md-dark" translate="LASTNAME"></span>
+                    <span class="md-dark" translate="LASTNAME"></span>
                 </th>
                 <th md-column name="Όνομα" order-by="first_name">
-                    <span class="material-icons md-dark" translate="FIRSTNAME"></span>
+                    <span class="md-dark" translate="FIRSTNAME"></span>
                 </th>
                 <th md-column name="ΑΦΜ" order-by="afm">
-                    <span class="material-icons md-dark" translate="AFM"></span>
+                    <span class="md-dark" translate="AFM"></span>
                 </th>
             </tr>
             </thead>
@@ -166,21 +179,26 @@
 <div ng-controller="PaymentController" ng-cloak>
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
         <div class="md-toolbar-tools">
-            <h2 class="md-title">Πληρωμές</h2>
+            <h2 class="md-title" translate="PAYMENT"></h2>
 
             <div flex></div>
-            <md-button class="md-raised" ng-click="showPayment($event)" translate="NEW_PAYMENT">
+            <md-button class="md-fab md-mini" ng-click="showPayment($event)">
+                <i class="material-icons">add</i>
             </md-button>
         </div>
     </md-toolbar>
 
-    <md-toolbar class="alternate" ng-show="selected.length" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <section layout="row" layout-sm="column" layout-align="right" layout-wrap>
-            <md-button class="md-raised" ng-click="answer('OK')" translate="UPDATE">
-            </md-button>
-            </md-button>
-        </section>
+    <md-toolbar class="md-toolbar-tools alternate md-hue-3" ng-show="selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="edit($event)">
+            <i class="material-icons">mode_edit</i>
+        </md-button>
+        <md-button class="md-icon-button md-warn" ng-click="delete($event)">
+            <i class="material-icons">delete</i>
+        </md-button>
+            </div>
     </md-toolbar>
 
     <md-table-container>
@@ -188,25 +206,25 @@
             <thead md-head md-order="query.order" md-trigger="onOrderChange">
             <tr>
                 <th md-column name="Ποσό" order-by="amount">
-                    <span class="material-icons md-dark" translate="AMOUNT"></span>
+                    <span class="md-dark" translate="AMOUNT"></span>
                 </th>
                 <th md-column name="Ημερομηνία Πληρωμής" order-by="payDate">
-                    <span class="material-icons md-dark" translate="PAYDATE"></span>
+                    <span class="md-dark" translate="PAYDATE"></span>
                 </th>
                 <th md-column numeric name="Μήνας" order-by="monthId">
-                    <span class="material-icons md-dark" translate="MONTH"></span>
+                    <span class="md-dark" translate="MONTH"></span>
                 </th>
                 <th md-column name="Οδός" order-by="streetname">
-                    <span class="material-icons md-dark" translate="STREETNAME"></span>
+                    <span class="md-dark" translate="STREETNAME"></span>
                 </th>
                 <th md-column numeric name="Αριθμός" order-by="streetnumber">
-                    <span class="material-icons md-dark" translate="STREETNUMBER"></span>
+                    <span class="md-dark" translate="STREETNUMBER"></span>
                 </th>
                 <th md-column name="Όνομα" order-by="first_name">
-                    <span class="material-icons md-dark" translate="FIRSTNAME"></span>
+                    <span class="md-dark" translate="FIRSTNAME"></span>
                 </th>
                 <th md-column name="Επίθετο" order-by="last_name">
-                    <span class="material-icons md-dark" translate="LASTNAME"></span>
+                    <span class="md-dark" translate="LASTNAME"></span>
                 </th>
 
             </tr>

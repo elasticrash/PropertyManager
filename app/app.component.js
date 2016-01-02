@@ -71,7 +71,7 @@ app.service('selectedProperties', function () {
             var asc = order.indexOf("-");
             var field = order.split("-")[order.split("-").length - 1];
 
-            $scope.properties.sort(function (a, b) {
+            initProperties.sort(function (a, b) {
                 if (a[field] !== null && b[field] !== null) {
                     return a[field].toString().localeCompare(b[field].toString());
                 }
@@ -81,9 +81,10 @@ app.service('selectedProperties', function () {
             });
 
             if (asc === -1) {
-                return $scope.properties.reverse();
+                initProperties.reverse();
             }
-            return $scope.properties;
+            $scope.properties = initProperties.slice(($scope.query.page - 1) * $scope.query.limit, ($scope.query.page - 1) * $scope.query.limit + $scope.query.limit);
+            $scope.properties.total = initProperties.length;
         };
 
         $scope.onPaginate  = function (page, limit) {
@@ -230,7 +231,7 @@ app.service('selectedProperties', function () {
             var asc = order.indexOf("-");
             var field = order.split("-")[order.split("-").length - 1];
 
-            $scope.tenants.sort(function (a, b) {
+            initTenants.sort(function (a, b) {
                 if (a[field] !== null && b[field] !== null) {
                     return a[field].toString().localeCompare(b[field].toString());
                 }
@@ -240,9 +241,10 @@ app.service('selectedProperties', function () {
             });
 
             if (asc === -1) {
-                return $scope.tenants.reverse();
+                initTenants.reverse();
             }
-            return $scope.tenants;
+            $scope.tenants = initTenants.slice(($scope.query.page - 1) * $scope.query.limit, ($scope.query.page - 1) * $scope.query.limit + $scope.query.limit);
+            $scope.tenants.total = initTenants.length;
         };
 
         $scope.onPaginationChange = function (page, limit) {

@@ -6,7 +6,7 @@ app.config(function ($translateProvider) {
         BUTTON_LANG_EN: 'english',
         BUTTON_LANG_GR: 'greek',
         PROP_TENANT: 'PROPERTY+TENANT',
-        NEW_PROPERTY: 'NEW PROPERTY',
+        PROPERTY: 'Property',
         UPDATE: 'UPDATE',
         DELETE: 'DELETE',
         STREETNAME: 'Street',
@@ -23,14 +23,13 @@ app.config(function ($translateProvider) {
         AMOUNT: 'Amount',
         PAYDATE: 'Payment date',
         MONTH: 'Month',
-        NEW_TENANT: 'NEW TENANT',
-        NEW_PAYMENT: 'NEW PAYMENT'
+        NEW_PAYMENT: 'Payment'
     });
     $translateProvider.translations('el', {
         BUTTON_LANG_EN: 'ΑΓΓΛΙΚΑ',
         BUTTON_LANG_GR: 'ΕΛΛΗΙΝΙΚΑ',
         PROP_TENANT: 'ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ',
-        NEW_PROPERTY: 'ΝΕΟ ΑΚΙΝΗΤΟ',
+        PROPERTY: 'Ακίνητο',
         UPDATE: 'ΕΝΗΜΕΡΩΣΗ',
         DELETE: 'ΔΙΑΓΡΑΦΗ',
         STREETNAME: 'Οδός',
@@ -47,8 +46,7 @@ app.config(function ($translateProvider) {
         AMOUNT: 'Ποσό',
         PAYDATE: 'Ημερομηνία Πληρωμής',
         MONTH: 'Μήνας',
-        NEW_TENANT: 'ΝΕΟΣ ΕΝΟΙΚΙΑΣΤΗΣ',
-        NEW_PAYMENT: 'ΝΕΑ ΠΛΗΡΩΜΗ'
+        PAYMENT: 'Πληρωμή'
     });
     $translateProvider.preferredLanguage('el');
 });

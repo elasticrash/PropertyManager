@@ -317,6 +317,10 @@ app.service('selectedProperties', function () {
     .controller('PaymentController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
         $scope.selected = [];
 
+        $scope.$on('RefreshPayments', function(event) {
+            loadPayments();
+        });
+
         $scope.ConnectPropertyAndTenant = function (ev) {
             var selectprop = 0;
             var selecttent = 0;
@@ -330,12 +334,11 @@ app.service('selectedProperties', function () {
             if (selectprop !== 1 || selecttent !== 1) {
                 $mdDialog.show(
                     $mdDialog.alert()
-                        .parent(angular.element(document.querySelector('#popupContainer')))
                         .clickOutsideToClose(true)
                         .title('ΠΡΟΣΟΧΗ')
                         .textContent('ΟΙ ΕΠΙΛΕΓΜΕΝΕΣ ΙΔΙΟΚΤΗΣΙΕΣ ΕΙΝΑΙ ' + selectprop
                         + ' ΟI ΕΠΙΛΕΓΜΕΝΟI ΕΝΟΙΚΙΑΣΤEΣ ΕΙΝΑΙ ' + selecttent + ' ΚΑΜΙΑ ΕΝΕΡΓΕΙΑ ΔΕΝ ΕΙΝΑΙ ΔΥΝΑΤΗ')
-                        .ariaLabel('Alert Dialog Demo')
+                        .ariaLabel('Alert Dialog')
                         .ok('ΟΚ')
                         .targetEvent(ev)
                 );
@@ -345,13 +348,12 @@ app.service('selectedProperties', function () {
                 if (selectedProperties.dataObj.properties.length === 1 && selectedProperties.dataObj.tenants.length === 1) {
                     $mdDialog.show(
                         $mdDialog.alert()
-                            .parent(angular.element(document.querySelector('#popupContainer')))
                             .clickOutsideToClose(true)
                             .title('ΠΡΟΣΟΧΗ')
                             .textContent('ΕΙΣΤΕ ΣΙΓΟΥΡΟΙ ΟΤΙ Ο ' + selectedProperties.dataObj.tenants[0].last_name
                             + ' ΕΝΟΙΚΙΑΣΕ ΤΟ ' + selectedProperties.dataObj.properties[0].streetname
                             + ' ' + selectedProperties.dataObj.properties[0].streetnumber)
-                            .ariaLabel('Alert Dialog Demo')
+                            .ariaLabel('Alert Dialog')
                             .ok('ΟΚ')
                             .targetEvent(ev)
                     );
@@ -360,44 +362,67 @@ app.service('selectedProperties', function () {
         }
 
         $scope.showPayment = function (ev) {
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
-            $mdDialog.show({
-                controller: 'PaymentController',
-                templateUrl: 'app/forms/payment.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                controllerAs: 'ctrl',
-                locals: {months: $scope.months},
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-        $scope.hide = function () {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function (answer, type) {
-            writePayment()
-                .then(
-                function (payment) {
-                });
-            $mdDialog.hide(answer);
-        };
+            var selectprop = 0;
 
-        function writePayment() {
-            var request = $http({
-                method: "post",
-                url: "/api/payment/add",
-                params: {
-                    amount: $scope.payment.first_name,
-                    paydate: $scope.payment.paydate,
-                    month: $scope.payment.month
+            if(selectedProperties.dataObj.properties.length !==0) {
+                if (selectedProperties.dataObj.properties) {
+                    selectprop = selectedProperties.dataObj.properties.length;
                 }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
+                if (selectprop === 1 && selectedProperties.dataObj.properties[0].tenant_id !== null) {
+                    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+                    $mdDialog.show({
+                        controller: PaymentDialogController,
+                        templateUrl: 'app/forms/payment.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        fullscreen: useFullScreen,
+                        scope: $scope,
+                        preserveScope: true,
+                        locals: {
+                            payment: {},
+                            selectedProperties: selectedProperties,
+                            months: $scope.months
+                        }
+                    });
+                }
+                else if (selectedProperties.dataObj.properties[0].tenant_id === null && selectprop === 1) {
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .clickOutsideToClose(true)
+                            .title('ΠΡΟΣΟΧΗ')
+                            .textContent('H ΕΠΙΛΕΓΜΕΝH ΙΔΙΟΚΤΗΣΙA ΔΕΝ ΕΧΕΙ ΕΝΟΙΚΙΑΣΤΗ')
+                            .ariaLabel('Alert Dialog')
+                            .ok('ΟΚ')
+                            .targetEvent(ev)
+                    );
+                }
+                else {
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .clickOutsideToClose(true)
+                            .title('ΠΡΟΣΟΧΗ')
+                            .textContent('ΟΙ ΕΠΙΛΕΓΜΕΝΕΣ ΙΔΙΟΚΤΗΣΙΕΣ ΕΙΝΑΙ ' + selectprop
+                            + ' ΔΕΝ ΕΙΝΑΙ ΔΥΝΑΤΗ Η ΔΗΜΙΟΥΡΓΙΑ ΠΛΗΡΩΜΗΣ')
+                            .ariaLabel('Alert Dialog')
+                            .ok('ΟΚ')
+                            .targetEvent(ev)
+                    );
+                }
+            }
+            else
+            {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('ΠΡΟΣΟΧΗ')
+                        .textContent('ΔΕΝ ΕΧΕΤΕ ΕΠΙΛΕΞΕΙ ΙΔΙΟΚΤΗΣΙΑ')
+                        .ariaLabel('Alert Dialog')
+                        .ok('ΟΚ')
+                        .targetEvent(ev)
+                );
+            }
+        };
 
         $scope.months = [];
         loadMonths();
@@ -433,6 +458,31 @@ app.service('selectedProperties', function () {
 
         function applyMonths(newproperties) {
             $scope.months = newproperties;
+        }
+
+
+        $scope.payments = [];
+        loadPayments();
+        function readPayments() {
+            var request = $http({
+                method: "get",
+                url: "/api/payment/list"
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+
+
+        function loadPayments() {
+            readPayments()
+                .then(
+                function (payments) {
+                    applyPayments(payments);
+                }
+            );
+        }
+
+        function applyPayments(newproperties) {
+            $scope.payments = newproperties;
         }
     })
     .controller('LanguageSwitchController', function ($scope, $translate) {

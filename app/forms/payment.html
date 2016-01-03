@@ -5,10 +5,8 @@
                 <label>Ποσό</label>
                 <input ng-model="payment.amount">
             </md-input-container>
-            <md-input-container>
-                <label>Ημερομηνία πληρωμής</label>
-                <input ng-model="payment.paydate">
-            </md-input-container>
+            <md-datepicker ng-model="payment.pay_date" md-placeholder="Ημερομηνία πληρωμής">
+            </md-datepicker>
         </div>
     </md-content>
     <md-content layout-padding>
@@ -25,7 +23,7 @@
 </form>
 <md-dialog-actions layout="row">
     <span flex></span>
-    <md-button class="md-raised md-primary" ng-click="answer('OK')">
+    <md-button class="md-raised md-primary" ng-click="answer('PAYMENT')">
         OK
     </md-button>
     <md-button class="md-raised md-warn" ng-click="answer('CANCEL')" style="margin-right:20px;">

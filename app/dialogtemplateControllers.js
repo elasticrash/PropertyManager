@@ -146,3 +146,82 @@ function TenantDialogController($scope, $http, $q,$mdDialog, tenant) {
         return ( $q.reject(response.data.message) );
     }
 }
+
+function PaymentDialogController($scope, $http, $q,$mdDialog, payment, selectedProperties) {
+    $scope.payment = payment;
+    $scope.selectedProperties = selectedProperties;
+
+    $scope.closeDialog = function () {
+        $mdDialog.hide();
+    };
+
+    $scope.hide = function () {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function (answer) {
+        if(answer === 'PAYMENT') {
+            writePayment()
+                .then(
+                function (tenant) {
+                    $scope.$emit('RefreshPayments');
+                });
+            $scope.$emit('RefreshPayments');
+            $mdDialog.hide(answer)
+        }
+        else
+        {
+            $mdDialog.hide(answer)
+        }
+    };
+
+    function writePayment() {
+
+        var monthid;
+        $scope.months.forEach(function(month){
+            if(month.name === $scope.payment.month)
+            {
+                monthid = month.month_id;
+            }
+        });
+
+        if($scope.payment.prop_pay_id){
+            var request = $http({
+                method: "post",
+                url: "/api/payment/update",
+                params: {
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+        else {
+            var request = $http({
+                method: "post",
+                url: "/api/payment/add",
+                params: {
+                    amount: $scope.payment.amount,
+                    pay_date: $scope.payment.pay_date,
+                    month_id: monthid,
+                    property_id: selectedProperties.dataObj.properties[0].property_id,
+                    tenant_id: selectedProperties.dataObj.properties[0].tenant_id
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+    }
+
+    function handleSuccess(response) {
+        return response.data;
+    }
+
+    function handleError(response) {
+        if (
+            !angular.isObject(response.data) || !response.data.message
+        ) {
+            return ( $q.reject("An unknown error occurred.") );
+        }
+        return ( $q.reject(response.data.message) );
+    }
+}

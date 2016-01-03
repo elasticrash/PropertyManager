@@ -40,7 +40,6 @@
         <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
             <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)"
                        translate="PROP_TENANT" aria-label="Connect Property to Tenant">
-
             </md-button>
         </div>
         <div flex></div>
@@ -209,10 +208,10 @@
                 <th md-column name="Ποσό" md-order-by="amount">
                     <span class="md-dark" translate="AMOUNT"></span>
                 </th>
-                <th md-column name="Ημερομηνία Πληρωμής" md-order-by="payDate">
+                <th md-column name="Ημερομηνία Πληρωμής" md-order-by="pay_date">
                     <span class="md-dark" translate="PAYDATE"></span>
                 </th>
-                <th md-column numeric name="Μήνας" md-order-by="monthId">
+                <th md-column numeric name="Μήνας" md-order-by="month_id">
                     <span class="md-dark" translate="MONTH"></span>
                 </th>
                 <th md-column name="Οδός" md-order-by="streetname">
@@ -233,8 +232,8 @@
             <tbody md-body>
             <tr md-row md-select="payment" md-auto-select ng-repeat="payment in payments">
                 <td md-cell>{{payment.amount}}</td>
-                <td md-cell>{{payment.payDate}}</td>
-                <td md-cell>{{payment.monthId}}</td>
+                <td md-cell>{{payment.pay_date}}</td>
+                <td md-cell>{{payment.name}}</td>
                 <td md-cell>{{payment.streetname}}</td>
                 <td md-cell>{{payment.streetnumber}}</td>
                 <td md-cell>{{payment.first_name}}</td>

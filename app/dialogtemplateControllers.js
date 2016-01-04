@@ -30,37 +30,37 @@ function PropertyDialogController($scope, $http, $q,$mdDialog, property) {
     };
 
     function writeProperty() {
-        if($scope.tenant.property_id){
-            var request = $http({
-                method: "post",
-                url: "/api/property/update",
-                params: {
-                    property_id: $scope.property.property_id,
-                    streetname: $scope.property.streetname,
-                    number: $scope.property.number,
-                    area: $scope.property.area,
-                    floor: $scope.property.floor,
-                    percentage: $scope.property.percentage,
-                    description: $scope.property.description
+                if ($scope.property.property_id) {
+                        var request = $http({
+                        method: "post",
+                        url: "/api/property/update",
+                        params: {
+                            property_id: $scope.property.property_id,
+                            streetname: $scope.property.streetname,
+                            number: $scope.property.number,
+                            area: $scope.property.area,
+                            floor: $scope.property.floor,
+                            percentage: $scope.property.percentage,
+                            description: $scope.property.description
+                        }
+                    });
+                    return ( request.then(handleSuccess, handleError) );
                 }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
-        else {
-            var request = $http({
-                method: "post",
-                url: "/api/property/add",
-                params: {
-                    streetname: $scope.property.streetname,
-                    number: $scope.property.number,
-                    area: $scope.property.area,
-                    floor: $scope.property.floor,
-                    percentage: $scope.property.percentage,
-                    description: $scope.property.description
-                }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
+            else {
+                var request = $http({
+                    method: "post",
+                    url: "/api/property/add",
+                    params: {
+                        streetname: $scope.property.streetname,
+                        number: $scope.property.number,
+                        area: $scope.property.area,
+                        floor: $scope.property.floor,
+                        percentage: $scope.property.percentage,
+                        description: $scope.property.description
+                    }
+                });
+                return ( request.then(handleSuccess, handleError) );
+            }
     }
 
     function handleSuccess(response) {
@@ -106,19 +106,19 @@ function TenantDialogController($scope, $http, $q,$mdDialog, tenant) {
     };
 
     function writeTenant() {
-        if($scope.tenant.tenant_id){
-            var request = $http({
-                method: "post",
-                url: "/api/tenant/update",
-                params: {
-                    tenant_id: $scope.tenant.tenant_id,
-                    first_name: $scope.tenant.first_name,
-                    last_name: $scope.tenant.last_name,
-                    afm: $scope.tenant.afm
-                }
-            });
-            return ( request.then(handleSuccess, handleError) );
-        }
+            if ($scope.tenant.tenant_id) {
+                var request = $http({
+                    method: "post",
+                    url: "/api/tenant/update",
+                    params: {
+                        tenant_id: $scope.tenant.tenant_id,
+                        first_name: $scope.tenant.first_name,
+                        last_name: $scope.tenant.last_name,
+                        afm: $scope.tenant.afm
+                    }
+                });
+                return ( request.then(handleSuccess, handleError) );
+            }
         else {
             var request = $http({
                 method: "post",

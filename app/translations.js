@@ -5,7 +5,8 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('en', {
         BUTTON_LANG_EN: 'english',
         BUTTON_LANG_GR: 'greek',
-        PROP_TENANT: 'PROPERTY+TENANT',
+        PROP_TENANT: 'Connect Property to Tenant',
+        DEL_PROP_TENANT: 'Disconnect Property from Tenant',
         PROPERTY: 'Property',
         UPDATE: 'UPDATE',
         DELETE: 'DELETE',
@@ -27,8 +28,9 @@ app.config(function ($translateProvider) {
     });
     $translateProvider.translations('el', {
         BUTTON_LANG_EN: 'ΑΓΓΛΙΚΑ',
-        BUTTON_LANG_GR: 'ΕΛΛΗΙΝΙΚΑ',
-        PROP_TENANT: 'ΑΚΙΝΗΤΟ+ΕΝΟΙΚΙΑΣΤΗΣ',
+        BUTTON_LANG_GR: 'ΕΛΛΗΝΙΚΑ',
+        PROP_TENANT: 'Σύνδεση Ακινήτου με Ενοικιαστή',
+        DEL_PROP_TENANT: 'Αποσύνδεση Ακινήτου από Ιδιοκτήτη',
         PROPERTY: 'Ακίνητο',
         UPDATE: 'ΕΝΗΜΕΡΩΣΗ',
         DELETE: 'ΔΙΑΓΡΑΦΗ',

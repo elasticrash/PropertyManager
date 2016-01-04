@@ -126,9 +126,9 @@ app.service('selectedProperties', function () {
                 .ok('NAI!')
                 .cancel('OXI');
             $mdDialog.show(confirm).then(function() {
-                deleteTenant()
+                deleteProperty()
                     .then(
-                    function (tenant) {
+                    function (property) {
                         loadProperties();
                     });
             }, function() {
@@ -156,7 +156,7 @@ app.service('selectedProperties', function () {
                 method: "post",
                 url: "/api/property/delete",
                 params: {
-                    tenant_id: $scope.selected[0].property_id
+                    property_id: $scope.selected[0].property_id
                 }
             });
             return ( request.then(handleSuccess, handleError) );
@@ -347,18 +347,39 @@ app.service('selectedProperties', function () {
             if (selectedProperties.dataObj.properties && selectedProperties.dataObj.properties) {
                 if (selectedProperties.dataObj.properties.length === 1 && selectedProperties.dataObj.tenants.length === 1) {
                     $mdDialog.show(
-                        $mdDialog.alert()
+                        $mdDialog.confirm()
                             .clickOutsideToClose(true)
                             .title('ΠΡΟΣΟΧΗ')
                             .textContent('ΕΙΣΤΕ ΣΙΓΟΥΡΟΙ ΟΤΙ Ο ' + selectedProperties.dataObj.tenants[0].last_name
                             + ' ΕΝΟΙΚΙΑΣΕ ΤΟ ' + selectedProperties.dataObj.properties[0].streetname
                             + ' ' + selectedProperties.dataObj.properties[0].streetnumber)
                             .ariaLabel('Alert Dialog')
-                            .ok('ΟΚ')
+                            .ok('NAI!')
+                            .cancel('OXI')
                             .targetEvent(ev)
-                    );
+                    ).then(function() {
+                            ConnectPropertyToTenant()
+                                .then(
+                                function (connect) {
+                                    $scope.$emit('RefreshProperties');
+                                });
+                        }, function() {
+                        });
                 }
             }
+        };
+
+        function ConnectPropertyToTenant()
+        {
+            var request = $http({
+                method: "post",
+                url: "/api/connect/update",
+                params: {
+                    property_id: selectedProperties.dataObj.properties[0].property_id,
+                    tenant_id: selectedProperties.dataObj.tenants[0].tenant_id
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
         }
 
         $scope.showPayment = function (ev) {

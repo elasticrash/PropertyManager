@@ -35,18 +35,36 @@
 
 <!-- 3. Display the application -->
 <body ng-app="PropertyManager" ng-cloak>
-<md-toolbar>
+<md-toolbar class="md-warn md-hue-3">
     <div class="md-toolbar-tools">
         <div ng-controller="PaymentController" class="md-padding" id="popupContainer" ng-cloak>
-            <md-button class="md-raised md-warn" ng-click="ConnectPropertyAndTenant($event)"
-                       translate="PROP_TENANT" aria-label="Connect Property to Tenant">
-            </md-button>
+            <md-menu-bar>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">
+                        Ενέργειες Ακινήτων
+                    </button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="ConnectPropertyAndTenant($event)"
+                                       translate="PROP_TENANT" aria-label="Connect Property to Tenant">
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="DisconnectPropertyAndTenant($event)"
+                                       translate="DEL_PROP_TENANT" aria-label="Disconnect Property from Tenant">
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
         </div>
         <div flex></div>
 
         <div ng-controller="LanguageSwitchController">
-            <md-button class="md-raised" aria-label="GREEK" ng-click="changeLanguage('el')" translate="BUTTON_LANG_GR"></md-button>
-            <md-button class="md-raised" aria-label="ENGLISH" ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></md-button>
+            <md-button class="md-raised" aria-label="GREEK" ng-click="changeLanguage('el')"
+                       translate="BUTTON_LANG_GR"></md-button>
+            <md-button class="md-raised" aria-label="ENGLISH" ng-click="changeLanguage('en')"
+                       translate="BUTTON_LANG_EN"></md-button>
         </div>
     </div>
 </md-toolbar>
@@ -55,6 +73,7 @@
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
         <div class="md-toolbar-tools">
             <h2 class="md-title" translate="PROPERTY"></h2>
+
             <div flex></div>
             <md-button class="md-fab md-mini" ng-click="showProperty($event)">
                 <i class="material-icons">add</i>
@@ -138,14 +157,14 @@
     <md-toolbar class="md-toolbar-tools alternate md-hue-3" ng-show="selected.length">
         <div class="md-toolbar-tools" layout-align="space-between">
             <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <div flex></div>
-        <md-button class="md-icon-button" ng-click="edit($event)">
-            <i class="material-icons">mode_edit</i>
-        </md-button>
-        <md-button class="md-icon-button md-warn" ng-click="delete($event)">
-            <i class="material-icons">delete</i>
-        </md-button>
-            </div>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="edit($event)">
+                <i class="material-icons">mode_edit</i>
+            </md-button>
+            <md-button class="md-icon-button md-warn" ng-click="delete($event)">
+                <i class="material-icons">delete</i>
+            </md-button>
+        </div>
     </md-toolbar>
 
     <md-table-container>
@@ -191,14 +210,14 @@
     <md-toolbar class="md-toolbar-tools alternate md-hue-3" ng-show="selected.length">
         <div class="md-toolbar-tools" layout-align="space-between">
             <div>{{selected.length}} {{selected.length > 1 ? 'Εγγραφές' : 'Εγγραφή'}} στο σύνολο</div>
-        <div flex></div>
-        <md-button class="md-icon-button" ng-click="edit($event)">
-            <i class="material-icons">mode_edit</i>
-        </md-button>
-        <md-button class="md-icon-button md-warn" ng-click="delete($event)">
-            <i class="material-icons">delete</i>
-        </md-button>
-            </div>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="edit($event)">
+                <i class="material-icons">mode_edit</i>
+            </md-button>
+            <md-button class="md-icon-button md-warn" ng-click="delete($event)">
+                <i class="material-icons">delete</i>
+            </md-button>
+        </div>
     </md-toolbar>
 
     <md-table-container>

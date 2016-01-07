@@ -1,11 +1,11 @@
 /**
  * Created by tougo on 17/12/15.
  */
-var app = angular.module('PropertyManager', ['md.data.table', 'ngMaterial','pascalprecht.translate', 'ngSanitize']);
+var app = angular.module('PropertyManager', ['md.data.table', 'ngMaterial', 'pascalprecht.translate', 'ngSanitize']);
 app.service('selectedProperties', function () {
-        var _dataObj = {};
-        this.dataObj = _dataObj;
-    })
+    var _dataObj = {};
+    this.dataObj = _dataObj;
+})
     .controller('PropertyController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
         $scope.title1 = 'TESTING';
         $scope.properties = [];
@@ -14,7 +14,7 @@ app.service('selectedProperties', function () {
 
         var initProperties = [];
 
-        $scope.$on('RefreshProperties', function(event) {
+        $scope.$on('RefreshProperties', function (event) {
             loadProperties();
         });
 
@@ -87,7 +87,7 @@ app.service('selectedProperties', function () {
             $scope.properties.total = initProperties.length;
         };
 
-        $scope.onPaginate  = function (page, limit) {
+        $scope.onPaginate = function (page, limit) {
             $scope.properties = initProperties.slice((page - 1) * limit, (page - 1) * limit + limit);
             $scope.properties.total = initProperties.length;
         };
@@ -103,7 +103,7 @@ app.service('selectedProperties', function () {
                 fullscreen: useFullScreen,
                 scope: $scope,
                 preserveScope: true,
-                locals : {property: {}}
+                locals: {property: {}}
             });
         };
 
@@ -116,26 +116,25 @@ app.service('selectedProperties', function () {
         $scope.answer = function (answer, type) {
         };
 
-        $scope.delete = function(ev)
-        {
+        $scope.delete = function (ev) {
             var confirm = $mdDialog.confirm()
                 .title('Διαγραφή Ακινήτου')
-                .textContent('Θέλετε να διαγράψεις τον '+ $scope.selected[0].streetname)
+                .textContent('Θέλετε να διαγράψεις τον ' + $scope.selected[0].streetname)
                 .ariaLabel('Lucky day')
                 .targetEvent(ev)
                 .ok('NAI!')
                 .cancel('OXI');
-            $mdDialog.show(confirm).then(function() {
+            $mdDialog.show(confirm).then(function () {
                 deleteProperty()
                     .then(
                     function (property) {
                         loadProperties();
                     });
-            }, function() {
+            }, function () {
             });
         };
 
-        $scope.edit = function(ev) {
+        $scope.edit = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             var property = $scope.selected[0];
             $mdDialog.show({
@@ -147,7 +146,7 @@ app.service('selectedProperties', function () {
                 fullscreen: useFullScreen,
                 scope: $scope,
                 preserveScope: true,
-                locals : {property: property}
+                locals: {property: property}
             });
         };
 
@@ -174,7 +173,7 @@ app.service('selectedProperties', function () {
         selectedProperties.dataObj.tenants = $scope.selected;
         var initTenants = [];
 
-        $scope.$on('RefreshData', function(event) {
+        $scope.$on('RefreshData', function (event) {
             loadRemoteData();
         });
 
@@ -263,30 +262,29 @@ app.service('selectedProperties', function () {
                 fullscreen: useFullScreen,
                 scope: $scope,
                 preserveScope: true,
-                locals : {tenant: {}}
+                locals: {tenant: {}}
             });
         };
 
-        $scope.delete = function(ev)
-        {
+        $scope.delete = function (ev) {
             var confirm = $mdDialog.confirm()
                 .title('Διαγραφή Ενοικιαστή')
-                .textContent('Θέλετε να διαγράψεις τον '+ $scope.selected[0].last_name)
+                .textContent('Θέλετε να διαγράψεις τον ' + $scope.selected[0].last_name)
                 .ariaLabel('Lucky day')
                 .targetEvent(ev)
                 .ok('NAI!')
                 .cancel('OXI');
-            $mdDialog.show(confirm).then(function() {
+            $mdDialog.show(confirm).then(function () {
                 deleteTenant()
                     .then(
                     function (tenant) {
                         loadRemoteData();
                     });
-            }, function() {
+            }, function () {
             });
         };
 
-        $scope.edit = function(ev) {
+        $scope.edit = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             var tenant = $scope.selected[0];
             $mdDialog.show({
@@ -298,7 +296,7 @@ app.service('selectedProperties', function () {
                 fullscreen: useFullScreen,
                 scope: $scope,
                 preserveScope: true,
-                locals : {tenant: tenant}
+                locals: {tenant: tenant}
             });
         };
 
@@ -317,7 +315,7 @@ app.service('selectedProperties', function () {
     .controller('PaymentController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
         $scope.selected = [];
 
-        $scope.$on('RefreshPayments', function(event) {
+        $scope.$on('RefreshPayments', function (event) {
             loadPayments();
         });
 
@@ -357,20 +355,68 @@ app.service('selectedProperties', function () {
                             .ok('NAI!')
                             .cancel('OXI')
                             .targetEvent(ev)
-                    ).then(function() {
+                    ).then(function () {
                             ConnectPropertyToTenant()
                                 .then(
                                 function (connect) {
                                     $scope.$emit('RefreshProperties');
                                 });
-                        }, function() {
+                        }, function () {
                         });
                 }
             }
         };
 
-        function ConnectPropertyToTenant()
-        {
+        $scope.DisconnectPropertyAndTenant = function (ev) {
+
+            var selectprop = 0;
+
+            if (selectedProperties.dataObj.properties) {
+                selectprop = selectedProperties.dataObj.properties.length;
+            }
+
+            if (selectprop !== 1) {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('ΠΡΟΣΟΧΗ')
+                        .textContent('ΔΕΝ ΥΠΟΣΤΗΡΙΖΕΤΕ ΜΑΖΙΚΗ ΑΠΟΣΥΝΔΕΣΗ')
+                        .ariaLabel('Alert Dialog')
+                        .ok('ΟΚ')
+                        .targetEvent(ev)
+                );
+            }
+            else {
+                var confirm = $mdDialog.confirm()
+                    .title('Αποσύνδεση Ενοικιαστή Από Ακίνητο')
+                    .textContent('Θέλετε να αποσυνδέσεις τον ' + selectedProperties.dataObj.properties[0].last_name)
+                    .ariaLabel('Lucky day')
+                    .targetEvent(ev)
+                    .ok('NAI!')
+                    .cancel('OXI');
+                $mdDialog.show(confirm).then(function () {
+                    removeTenant()
+                        .then(
+                        function (property) {
+                            $scope.$emit('RefreshProperties');
+                        });
+                }, function () {
+                });
+            }
+        };
+
+        function removeTenant() {
+            var request = $http({
+                method: "post",
+                url: "/api/disconnect/tenant",
+                params: {
+                    property_id: selectedProperties.dataObj.properties[0].property_id
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
+
+        function ConnectPropertyToTenant() {
             var request = $http({
                 method: "post",
                 url: "/api/connect/update",
@@ -385,7 +431,7 @@ app.service('selectedProperties', function () {
         $scope.showPayment = function (ev) {
             var selectprop = 0;
 
-            if(selectedProperties.dataObj.properties.length !==0) {
+            if (selectedProperties.dataObj.properties.length !== 0) {
                 if (selectedProperties.dataObj.properties) {
                     selectprop = selectedProperties.dataObj.properties.length;
                 }
@@ -431,8 +477,7 @@ app.service('selectedProperties', function () {
                     );
                 }
             }
-            else
-            {
+            else {
                 $mdDialog.show(
                     $mdDialog.alert()
                         .clickOutsideToClose(true)

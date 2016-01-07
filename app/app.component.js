@@ -312,7 +312,7 @@ app.service('selectedProperties', function () {
         }
 
     })
-    .controller('PaymentController', function ($scope, $http, $q, $mdDialog, $mdMedia, selectedProperties) {
+    .controller('PaymentController', function ($scope, $http, $q, $rootScope, $mdDialog, $mdMedia, selectedProperties) {
         $scope.selected = [];
 
         $scope.$on('RefreshPayments', function (event) {
@@ -359,7 +359,7 @@ app.service('selectedProperties', function () {
                             ConnectPropertyToTenant()
                                 .then(
                                 function (connect) {
-                                    $scope.$emit('RefreshProperties');
+                                    $rootScope.$broadcast('RefreshProperties');
                                 });
                         }, function () {
                         });
@@ -398,7 +398,7 @@ app.service('selectedProperties', function () {
                     removeTenant()
                         .then(
                         function (property) {
-                            $scope.$emit('RefreshProperties');
+                            $rootScope.$broadcast('RefreshProperties');
                         });
                 }, function () {
                 });

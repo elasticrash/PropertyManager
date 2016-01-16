@@ -552,6 +552,36 @@ app.service('selectedProperties', function () {
         function applyPayments(newproperties) {
             $scope.payments = newproperties;
         }
+
+        $scope.delete = function (ev) {
+            var confirm = $mdDialog.confirm()
+                .title('Διαγραφή Ενοικιαστή')
+                .textContent('Θέλετε να διαγράψεις την πληρωμή;')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('NAI!')
+                .cancel('OXI');
+            $mdDialog.show(confirm).then(function () {
+                deletepayment()
+                    .then(
+                    function (tenant) {
+                        $scope.selected = [];
+                        loadPayments();
+                    });
+            }, function () {
+            });
+        }
+
+        function deletepayment() {
+            var request = $http({
+                method: "post",
+                url: "/api/payment/delete",
+                params: {
+                    payment_id: $scope.selected[0].payment_id
+                }
+            });
+            return ( request.then(handleSuccess, handleError) );
+        }
     })
     .controller('LanguageSwitchController', function ($scope, $translate) {
         $scope.changeLanguage = function (key) {

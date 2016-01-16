@@ -128,6 +128,7 @@ app.service('selectedProperties', function () {
                 deleteProperty()
                     .then(
                     function (property) {
+                        $scope.selected = [];
                         loadProperties();
                     });
             }, function () {
@@ -278,6 +279,7 @@ app.service('selectedProperties', function () {
                 deleteTenant()
                     .then(
                     function (tenant) {
+                        $scope.selected = [];
                         loadRemoteData();
                     });
             }, function () {

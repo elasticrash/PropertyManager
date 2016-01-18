@@ -1,6 +1,8 @@
 /**
  * Created by tougo on 19/12/15.
  */
+ var pg = require('pg');
+
 module.exports = function(){
     this.select = function (what) {
         this.query += " SELECT " + what;
@@ -211,7 +213,7 @@ module.exports = function(){
     this.query = "";
     this.error = "";
     this.connectionstring = "";
-    this.connectandquery = function(pg, res, query, results){
+    this.connectandquery = function(res, query, results){
         pg.connect(this.connectionstring, function(err, client, done) {
             if(err) {
                 done();

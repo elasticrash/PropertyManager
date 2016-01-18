@@ -2,7 +2,7 @@
   "name": "property-manager",
   "version": "1.0.0",
   "scripts": {
-    "start": "node node_modules/tougo-requests/tougo-requests.js"
+    "start": "nodemon node_modules/tougo-requests/tougo-requests.js"
   },
   "license": "ISC",
   "dependencies": {
